@@ -1,6 +1,11 @@
 # Aprendizaje Automático 🤖📚
 
-Repositorio dedicado al estudio, resolución de trabajos prácticos e implementación didáctica de algoritmos de Machine Learning para el curso universitario.
+Repositorio dedicado al estudio, resolución de trabajos prácticos e implementación didáctica de algoritmos de Machine Learning.
+
+> [!NOTE]
+> **Créditos y Origen Institucional:**  
+> Todo el contenido teórico, letras de trabajos prácticos y material de referencia provienen del curso de **Aprendizaje Automático** de la **Facultad de Ingeniería (FING) - Universidad de la República (UdelaR)**, Uruguay.  
+> Este repositorio constituye un recurso de estudio abierto y colaborativo para estudiantes de la materia.
 
 ---
 
@@ -9,18 +14,22 @@ Repositorio dedicado al estudio, resolución de trabajos prácticos e implementa
 ```text
 aprendizaje-automatico/
 ├── teoricos/               # Diapositivas, notas conceptuales y glosario
-│   ├── GLOSARIO.md         # Glosario general de términos y notación matemática
-│   └── README.md
-├── practicos/              # Enunciados y letras de los trabajos prácticos
-│   └── README.md
-├── resultados/             # Resoluciones, notebooks con código, gráficos y reportes
-│   └── README.md
-├── algoritmos/             # Implementaciones en Python de algoritmos y funciones auxiliares
-│   ├── __init__.py
-│   └── README.md
+│   ├── GLOSARIO.md         # Glosario formal de términos y notación matemática
+│   ├── clase 1 - intro/
+│   ├── clase 2 - concept_learning/
+│   └── clase 3 - arboles_de_decision/
+├── practicos/              # Trabajos prácticos de la materia
+│   └── practico 1/
+│       ├── letra/          # Enunciados de los ejercicios
+│       └── resultados/     # Resoluciones detalladas y scripts ejecutables en Python
+├── algoritmos/             # Módulos reutilizables y visualizadores interactivos
+│   ├── concept_learning.py
+│   ├── concept_learning_visualizer.py
+│   └── __init__.py
 ├── requirements.txt        # Dependencias recomendadas para el entorno de Python
 └── README.md               # Descripción general del repositorio
 ```
+
 
 
 ---
