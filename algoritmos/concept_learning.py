@@ -82,8 +82,14 @@ class Hypothesis:
             return hash(("NULL", len(self.values)))
         return hash(tuple(self.values))
 
+    def __lt__(self, other: 'Hypothesis') -> bool:
+        if not isinstance(other, Hypothesis):
+            return NotImplemented
+        return self.values < other.values
+
     def __repr__(self) -> str:
         return f"<{', '.join(self.values)}>"
+
 
 
 class FindS:
@@ -216,7 +222,7 @@ class CandidateElimination:
                 # 1. Remover de G hipótesis que no hagan match con x
                 self.G = {g for g in self.G if g.matches(instance)}
 
-                # 2. Generalizar hipótesis de S inconsistentes
+                # 2. Generalizar hipótesis de S inconsistentes que no hacen match con x
                 new_S = set()
                 for s in self.S:
                     if not s.matches(instance):

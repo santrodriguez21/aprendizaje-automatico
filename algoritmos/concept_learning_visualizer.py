@@ -173,7 +173,7 @@ def plot_version_space(
                         )
                     )
 
-    # Dibujar Cajas de Nodos con formato nítido y texto completo
+    # Dibujar Cajas de Nodos y texto completo
     def draw_node_box(h: Hypothesis, x: float, y: float, bg_color: str, border_color: str, text_color: str, tag: str):
         text_str = f"{tag}\n{repr(h)}"
         bbox_props = dict(
@@ -223,7 +223,7 @@ def plot_version_space(
 
     if save_path:
         plt.savefig(save_path, dpi=200, bbox_inches="tight", facecolor=fig.get_facecolor())
-        print(f" Gráfico nítido guardado en: {save_path}")
+        print(f" Gráfico guardado en: {save_path}")
 
     if show_plot:
         try:
