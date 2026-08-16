@@ -100,8 +100,10 @@ def run_pedro_demo():
         print(f"   -> Clasificacion: {res['decision']}")
         print(f"   -> Detalle: {res['confidence']}")
 
-    # 6. Guardar grafico
-    output_img = os.path.join(os.path.dirname(__file__), "espacio_de_versiones_pedro.png")
+    # 6. Guardar grafico en carpeta de salida (ignorada por git)
+    output_dir = os.path.join(os.path.dirname(__file__), "output")
+    os.makedirs(output_dir, exist_ok=True)
+    output_img = os.path.join(output_dir, "espacio_de_versiones_pedro.png")
     plot_version_space(ce, title="Espacio de Versiones Final - Problema de Pedro", save_path=output_img)
 
 
