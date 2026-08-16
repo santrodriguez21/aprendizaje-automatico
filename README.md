@@ -37,3 +37,64 @@ python -m venv venv
 # Instalar dependencias
 pip install -r requirements.txt
 ```
+
+---
+
+## 🤝 Cómo Colaborar (Guía de Contribución)
+
+¡Las contribuciones son bienvenidas! Para colaborar con correcciones, mejoras teóricas, nuevos algoritmos o resoluciones de prácticos, sigue estos pasos:
+
+```mermaid
+graph LR
+    Fork["1. Fork del Repo"] --> Clone["2. Clonar localmente"]
+    Clone --> Branch["3. Crear una Rama"]
+    Branch --> Commit["4. Hacer Cambios & Commit"]
+    Commit --> Push["5. Push a tu Fork"]
+    Push --> PR["6. Abrir Pull Request"]
+    PR --> Review["7. Revisión & Merge"]
+```
+
+### 1. Hacer un Fork del Repositorio
+* Ve a la página principal del proyecto en GitHub: [santrodriguez21/aprendizaje-automatico](https://github.com/santrodriguez21/aprendizaje-automatico).
+* Haz clic en el botón **Fork** (arriba a la derecha) para crear una copia completa en tu cuenta de GitHub.
+
+### 2. Clonar tu Fork Localmente
+Clona tu copia remota a tu máquina de desarrollo:
+```bash
+git clone https://github.com/TU_USUARIO/aprendizaje-automatico.git
+cd aprendizaje-automatico
+```
+
+*(Opcional recomendado)* Configura el repositorio original como remoto `upstream` para mantenerte actualizado:
+```bash
+git remote add upstream https://github.com/santrodriguez21/aprendizaje-automatico.git
+```
+
+### 3. Crear una Rama (*Feature Branch*)
+Crea y cámbiate a una nueva rama con un nombre descriptivo para tus cambios:
+```bash
+git checkout -b feature/nombre-de-la-mejora
+# Ejemplos: fix/ejercicio-04, feature/practico-02, docs/resumen-clase-03
+```
+
+### 4. Realizar tus Modificaciones y Commits
+Haz tus cambios siguiendo las convenciones de estilo del proyecto (markdown claro, notación LaTeX y código documentado en Python) y guarda tus avances con mensajes claros:
+```bash
+git add .
+git commit -m "feat(practico-1): agregar resolución de ejercicio 4 con script en python"
+```
+
+### 5. Subir los Cambios a tu Fork
+Envía tu rama a tu repositorio en GitHub:
+```bash
+git push origin feature/nombre-de-la-mejora
+```
+
+### 6. Crear un Pull Request (PR)
+* Ve a tu repositorio en GitHub; verás un banner amarillo que dice **"Compare & pull request"**. Haz clic en él.
+* Asegúrate de que la rama base (*base repository*) sea `santrodriguez21/aprendizaje-automatico` en la rama `main`.
+* Escribe un título y una descripción clara de lo que agregas o corriges.
+* Haz clic en **Create Pull Request**.
+
+### 7. Esperar Revisión y Aprobación
+* El mantenedor del repositorio revisará tus cambios, dejará comentarios si son necesarios ajustes y finalmente aprobará e integrará (*Merge*) tu aporte a la rama principal `main`.
