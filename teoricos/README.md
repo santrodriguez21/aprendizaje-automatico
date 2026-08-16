@@ -17,3 +17,10 @@ Material conceptual, notas, diapositivas y ejemplos organizados por cada clase:
   - 📓 [**`02_find_s_y_candidate_elimination.ipynb`**](./clase%202%20-%20concept_learning/ejemplos/02_find_s_y_candidate_elimination.ipynb): Notebook interactivo paso a paso con tablas de evolución y gráficos de retículas.
   - 🐍 [**`demo_interactiva.py`**](./clase%202%20-%20concept_learning/ejemplos/demo_interactiva.py): Script de consola para ejecutar y visualizar los algoritmos con el caso de Pedro.
   - 📊 Visualización provista por [**`algoritmos.concept_learning_visualizer`**](../../algoritmos/concept_learning_visualizer.py).
+
+---
+
+### 📂 [Clase 3: Árboles de Decisión y Algoritmo ID3](./clase%203%20-%20decision_trees/)
+- 📄 [**`03-arboles-de-decision-e-id3.md`**](./clase%203%20-%20decision_trees/03-arboles-de-decision-e-id3.md): Representación de árboles (DNF), algoritmo ID3, entropía de Shannon, ganancia de información, sesgo inductivo (preferencial vs. restrictivo), navaja de Ockham y referencias académicas.
+- 📑 [**`3_arboles_de_decision.pdf`**](./clase%203%20-%20decision_trees/3_arboles_de_decision.pdf): Diapositivas originales de la clase.
+
