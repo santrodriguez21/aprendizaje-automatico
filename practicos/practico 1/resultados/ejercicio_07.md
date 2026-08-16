@@ -105,13 +105,8 @@ $$\mathbf{\mathcal{R}_{\text{segura}} = \{ (x, y) \in \mathbb{R}^{+2} \mid x + y
 ### Parte d) Inconsistencia ante el Ejemplo $(1, 1)$ Negativo
 
 * Si se incorpora $(1, 1)$ como **Negativo ($-$)**:
-  $$1 + 1 = 2 \implies 2 > a \implies a < 2 \implies a \le 1$$
+  $$1 + 1 = 2 \implies a < 2 \implies a \le 1$$
 * Sin embargo, el conjunto previo contenía $(2, 0)$ como **Positivo ($+$)**, lo cual exigía $a \ge 2$.
 * **Consecuencia Teórica:**
   $$a \ge 2 \land a \le 1 \implies \text{Contradicción lógica} \implies \mathbf{VS = \emptyset}$$
   El espacio de versiones colapsa y queda completamente vacío.
-
-#### ¿Qué hacer en este caso?
-1. **Verificación de Calidad de Datos:** Revisar si el ejemplo $(1, 1)$ contiene un error de etiquetado (ruido) o error de medición.
-2. **Relajación del Espacio de Hipótesis:** Considerar formas geométricas más flexibles (por ejemplo, triángulos no isósceles o con desplazamientos de origen).
-3. **Cambio de Paradigma de Aprendizaje:** Abandonar la consistencia estricta de Candidate-Elimination y migrar a algoritmos probabilísticos o tolerantes al ruido (como Árboles de Decisión ID3 con ganancia de información, o clasificadores con margen blando / *Soft Margin*).
