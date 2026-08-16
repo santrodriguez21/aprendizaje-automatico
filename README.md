@@ -8,9 +8,10 @@ Repositorio dedicado al estudio, resolución de trabajos prácticos e implementa
 
 ```text
 aprendizaje-automatico/
-├── teoricos/               # Diapositivas, resúmenes y notas conceptuales de las clases teóricas
+├── teoricos/               # Diapositivas, notas conceptuales y glosario
+│   ├── GLOSARIO.md         # Glosario general de términos y notación matemática
 │   └── README.md
-├── practicos/              # Enunciados, consignas y datos originales de los trabajos prácticos
+├── practicos/              # Enunciados y letras de los trabajos prácticos
 │   └── README.md
 ├── resultados/             # Resoluciones, notebooks con código, gráficos y reportes
 │   └── README.md
@@ -20,6 +21,7 @@ aprendizaje-automatico/
 ├── requirements.txt        # Dependencias recomendadas para el entorno de Python
 └── README.md               # Descripción general del repositorio
 ```
+
 
 ---
 

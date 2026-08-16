@@ -2,7 +2,10 @@
 
 Material conceptual, notas, diapositivas y ejemplos organizados por cada clase:
 
+* 📖 [**`GLOSARIO.md`**](./GLOSARIO.md): **Glosario de Términos y Notación Formal** (organizado por temática: Fundamentos, Concept Learning, Árboles de Decisión, Sesgos y Métricas).
+
 ---
+
 
 ### 📂 [Clase 1: ¿Qué es Aprender y Tipos de Aprendizaje?](./clase%201%20-%20tipos%20de%20aprendizaje/)
 - 📄 [**`01-que-es-aprender-y-tipos-de-aprendizaje.md`**](./clase%201%20-%20tipos%20de%20aprendizaje/01-que-es-aprender-y-tipos-de-aprendizaje.md): Resumen conceptual, formalismo $(T, P, E)$ de Tom Mitchell y paradigmas (Supervisado, No Supervisado, Refuerzo).
