@@ -5,9 +5,10 @@ Guías de ejercicios, enunciados y letras de los trabajos prácticos:
 ---
 
 ### 📂 [Práctico 1: Introducción y Aprendizaje Conceptual](./practico%201/)
-- 📄 [**`practico_1.md`**](./practico%201/letra/practico_1.md): Enunciados completos, desarrollo formal, diagramas en ASCII/LaTeX y soluciones de los 8 ejercicios.
+- 📄 [**`practico_1.md`**](./practico%201/letra/practico_1.md): Enunciados completos limpios con tablas y diagramas en ASCII/LaTeX.
 - 📑 [**`practico_1.pdf`**](./practico%201/letra/practico_1.pdf): Letra original en PDF.
-- 📁 [**`Resultados / Notebooks`**](./practico%201/resultados/): Scripts, experimentos y resoluciones prácticas.
+- 📁 [**`Resultados / Soluciones`**](./practico%201/resultados/): Resoluciones detalladas por ejercicio (`ejercicio_01.md` al `ejercicio_08.md`), código y simulaciones.
+
 
 ---
 
