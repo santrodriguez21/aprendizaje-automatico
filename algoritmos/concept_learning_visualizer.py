@@ -112,19 +112,26 @@ def plot_version_space(
     if not include_intermediates:
         intermediate_set = set()
 
-    # Configuración de capas y posiciones
-    fig, ax = plt.subplots(figsize=(16, 9), dpi=180)
-    fig.patch.set_facecolor("#FAFAFA")
-    ax.set_facecolor("#FAFAFA")
-
-    # Posiciones X de cada capa
+    # Configuración de capas y posiciones con ancho dinámico
     g_list = sorted(list(g_set), key=lambda h: repr(h))
     int_list = sorted(list(intermediate_set), key=lambda h: repr(h))
     s_list = sorted(list(s_set), key=lambda h: repr(h))
+    all_nodes = s_list + int_list + g_list
+
+    # Longitud máxima de texto para calcular espaciado
+    max_repr_len = max((len(repr(h)) for h in all_nodes), default=30)
+    max_layer_count = max(len(g_list), len(int_list), len(s_list), 1)
+
+    # Ancho y espaciado proporcional
+    node_spacing = max(6.5, (max_repr_len * 0.18) + 2.5)
+    total_width = max_layer_count * node_spacing
+    fig_width = max(18.0, total_width + 7.0)
+
+    fig, ax = plt.subplots(figsize=(fig_width, 9.5), dpi=200)
+    fig.patch.set_facecolor("#FAFAFA")
+    ax.set_facecolor("#FAFAFA")
 
     positions: Dict[Hypothesis, Tuple[float, float]] = {}
-
-    total_width = 14.0
     start_x = 1.0
 
     # Capa G (Superior, y=2.5)
@@ -143,12 +150,9 @@ def plot_version_space(
         positions[s] = (x, 0.5)
 
     # Dibujar aristas de generalización (S -> Intermedias -> G o S -> G)
-    all_nodes = s_list + int_list + g_list
-
     for h_spec in all_nodes:
         for h_gen in all_nodes:
             if h_gen.is_strictly_more_general(h_spec):
-                # Verificar si es una relación directa (sin ningún nodo intermedio en nuestro conjunto)
                 is_direct = True
                 for h_mid in all_nodes:
                     if h_gen.is_strictly_more_general(h_mid) and h_mid.is_strictly_more_general(h_spec):
@@ -160,24 +164,27 @@ def plot_version_space(
                     x2, y2 = positions[h_gen]
                     ax.annotate(
                         "",
-                        xy=(x2, y2 - 0.12),
-                        xytext=(x1, y1 + 0.12),
+                        xy=(x2, y2 - 0.14),
+                        xytext=(x1, y1 + 0.14),
                         arrowprops=dict(
                             arrowstyle="-|>",
                             color="#7F8C8D",
-                            lw=1.6,
+                            lw=1.8,
                             ls="--",
                             mutation_scale=14,
-                            shrinkA=5,
-                            shrinkB=5
+                            shrinkA=6,
+                            shrinkB=6
                         )
                     )
+
+    # Ajuste de tamaño de fuente según longitud de caracteres
+    font_size = 9 if max_repr_len > 35 else 10
 
     # Dibujar Cajas de Nodos y texto completo
     def draw_node_box(h: Hypothesis, x: float, y: float, bg_color: str, border_color: str, text_color: str, tag: str):
         text_str = f"{tag}\n{repr(h)}"
         bbox_props = dict(
-            boxstyle="round,pad=0.5,rounding_size=0.3",
+            boxstyle="round,pad=0.55,rounding_size=0.3",
             facecolor=bg_color,
             edgecolor=border_color,
             linewidth=2.0,
@@ -188,7 +195,7 @@ def plot_version_space(
             text_str,
             ha="center",
             va="center",
-            fontsize=10,
+            fontsize=font_size,
             fontweight="bold",
             color=text_color,
             bbox=bbox_props,
@@ -210,15 +217,15 @@ def plot_version_space(
         x, y = positions[s]
         draw_node_box(s, x, y, "#E8F8F5", "#27AE60", "#117A65", "[Límite Específico S]")
 
-    # Anotaciones de Capas a la izquierda
-    ax.text(-0.5, 2.5, "▲ Más General\n(Límite G)", fontsize=11, fontweight="bold", color="#2980B9", va="center", ha="right")
+    # Anotaciones de Capas a la izquierda con margen amplio
+    ax.text(-1.2, 2.5, "▲ Más General\n(Límite G)", fontsize=11, fontweight="bold", color="#2980B9", va="center", ha="right")
     if int_list:
-        ax.text(-0.5, 1.5, "◆ Espacio de Versiones\n(Consistentes)", fontsize=10, fontstyle="italic", color="#7F8C8D", va="center", ha="right")
-    ax.text(-0.5, 0.5, "▼ Más Específica\n(Límite S)", fontsize=11, fontweight="bold", color="#27AE60", va="center", ha="right")
+        ax.text(-1.2, 1.5, "◆ Espacio de Versiones\n(Consistentes)", fontsize=10, fontstyle="italic", color="#7F8C8D", va="center", ha="right")
+    ax.text(-1.2, 0.5, "▼ Más Específica\n(Límite S)", fontsize=11, fontweight="bold", color="#27AE60", va="center", ha="right")
 
-    ax.set_xlim(-2.5, 17.5)
+    ax.set_xlim(-3.5, total_width + 3.5)
     ax.set_ylim(0.0, 3.2)
-    ax.set_title(f"{title}\n(Orden Parcial General-Específico)", fontsize=14, fontweight="bold", pad=15, color="#1A252C")
+    ax.set_title(f"{title}\n(Orden Parcial General-Específico)", fontsize=14, fontweight="bold", pad=18, color="#1A252C")
     ax.axis("off")
 
     if save_path:
@@ -232,3 +239,4 @@ def plot_version_space(
             pass
 
     plt.close(fig)
+

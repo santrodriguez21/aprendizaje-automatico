@@ -136,8 +136,8 @@ $$d_4 = [\text{Soleado}, \text{Templado}, \text{Alta}, \text{Fuerte}, \text{Frí
 ---
 
 #### Resultado Final del Espacio de Versiones:
-$$\mathbf{S = \{ \langle \text{Soleado}, \text{Templado}, ?, \text{Fuerte}, ?, ? \rangle \}}$$
 $$\mathbf{G = \{ \langle \text{Soleado}, ?, ?, ?, ?, ? \rangle, \langle ?, \text{Templado}, ?, ?, ?, ? \rangle \}}$$
+$$\mathbf{S = \{ \langle \text{Soleado}, \text{Templado}, ?, \text{Fuerte}, ?, ? \rangle \}}$$
 
 ---
 

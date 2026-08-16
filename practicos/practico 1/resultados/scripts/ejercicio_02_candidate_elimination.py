@@ -1,132 +1,110 @@
 """
-Ejercicio 2: Algoritmo Candidate-Elimination (Pedro Fútbol Playa)
-=================================================================
+Ejercicio 2: Algoritmo Candidate-Elimination y Visualizador (Pedro Fútbol Playa)
+================================================================================
 Práctico 1: Introducción y Aprendizaje Conceptual
 Curso: Aprendizaje Automático
 
-Calcula las fronteras S y G del Espacio de Versiones y evalúa las instancias 5 a 8.
+Aprende el Espacio de Versiones (S y G) para el caso de fútbol playa,
+muestra la traza paso a paso, clasifica las instancias 5 a 8 y genera
+el gráfico visual de la retícula del Espacio de Versiones.
 """
 
-from typing import List, Tuple
+import os
+import sys
 
-ATRIBUTOS = {
-    'Cielo': ['Soleado', 'Lluvioso', 'Nublado'],
-    'Temp': ['Templado', 'Frío'],
-    'Humedad': ['Normal', 'Alta'],
-    'Viento': ['Fuerte', 'Suave'],
-    'TmpAgua': ['Templada', 'Fría'],
-    'Tiempo': ['Sin cambios', 'Cambiante']
-}
+# Asegurar encoding UTF-8 en Windows
+if sys.platform.startswith("win"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
 
-NOMBRES_ATTRS = list(ATRIBUTOS.keys())
-N_ATTRS = len(NOMBRES_ATTRS)
+# Agregar la raíz del repositorio al path para importar algoritmos
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "..")))
 
-def es_mas_general_o_igual(h1: List[str], h2: List[str]) -> bool:
-    """Retorna True si h1 >=_g h2."""
-    for v1, v2 in zip(h1, h2):
-        if v1 != '?' and v1 != v2:
-            return False
-    return True
+from algoritmos import (
+    CandidateElimination,
+    print_step_by_step_trace,
+    plot_version_space
+)
 
-def satisface(instancia: Tuple[str, ...], h: List[str]) -> bool:
-    """Evalúa si una instancia cumple una hipótesis h."""
-    for v_inst, v_h in zip(instancia, h):
-        if v_h != '?' and v_h != v_inst:
-            return False
-    return True
 
-def candidate_elimination(datos: List[Tuple[Tuple[str, ...], int]]):
-    S = [['∅'] * N_ATTRS]
-    G = [['?'] * N_ATTRS]
+def run_ejercicio_02():
+    print("=" * 80)
+    print(" EJERCICIO 2: CANDIDATE-ELIMINATION (PEDRO JUEGA AL FÚTBOL EN LA PLAYA)")
+    print("=" * 80)
+
+    # 1. Definición del dominio de atributos
+    domains = {
+        'Cielo': ['Soleado', 'Lluvioso', 'Nublado'],
+        'Temp': ['Templado', 'Frío'],
+        'Humedad': ['Normal', 'Alta'],
+        'Viento': ['Fuerte', 'Suave'],
+        'TmpAgua': ['Templada', 'Fría'],
+        'Tiempo': ['Sin cambios', 'Cambiante']
+    }
+
+    # 2. Conjunto de entrenamiento D (Tabla del Ejercicio 2)
+    X = [
+        ['Soleado', 'Templado', 'Normal', 'Fuerte', 'Templada', 'Sin cambios'],
+        ['Soleado', 'Templado', 'Alta', 'Fuerte', 'Templada', 'Sin cambios'],
+        ['Lluvioso', 'Frío', 'Alta', 'Fuerte', 'Templada', 'Cambiante'],
+        ['Soleado', 'Templado', 'Alta', 'Fuerte', 'Fría', 'Cambiante']
+    ]
+    y = ['SÍ', 'SÍ', 'NO', 'SÍ']
+
+    print("\n[+] 1. CONJUNTO DE ENTRENAMIENTO (D):")
+    print(f"{'#':<4} {'Cielo':<10} {'Temp':<10} {'Humedad':<10} {'Viento':<10} {'TmpAgua':<10} {'Tiempo':<12} {'Juega?'}")
+    print("-" * 75)
+    for i, (row, label) in enumerate(zip(X, y), 1):
+        print(f"x_{i:<2} {row[0]:<10} {row[1]:<10} {row[2]:<10} {row[3]:<10} {row[4]:<10} {row[5]:<12} {label}")
+
+    # 3. Ejecución de Candidate-Elimination
+    ce = CandidateElimination(domains)
+    ce.fit(X, y)
+
+    # 4. Mostrar traza paso a paso con el visualizador
+    print_step_by_step_trace(ce)
+
+    print("\n[OK] FRONTERAS FINALES DEL ESPACIO DE VERSIONES:")
+    print(f"   Límite Específico S_4 = {ce.S}")
+    print(f"   Límite General    G_4 = {ce.G}")
+
+    # 5. Clasificación de instancias de prueba 5 a 8 (Parte iii)
+    print("\n" + "=" * 80)
+    print(" [*] CLASIFICACIÓN DE NUEVAS INSTANCIAS DE PRUEBA (#5 a #8)")
+    print("=" * 80)
+
+    test_cases = [
+        (5, ['Soleado', 'Templado', 'Normal', 'Fuerte', 'Fría', 'Cambiante']),
+        (6, ['Lluvioso', 'Frío', 'Normal', 'Suave', 'Templada', 'Sin cambios']),
+        (7, ['Soleado', 'Templado', 'Normal', 'Suave', 'Templada', 'Sin cambios']),
+        (8, ['Soleado', 'Frío', 'Normal', 'Fuerte', 'Templada', 'Sin cambios'])
+    ]
+
+    for num, test_inst in test_cases:
+        res = ce.classify(test_inst)
+        inst_str = ", ".join(f"{k}={v}" for k, v in zip(domains.keys(), test_inst))
+        print(f"\nInstancia #{num}: [{inst_str}]")
+        print(f"   -> Clasificación: {res['decision']}")
+        print(f"   -> Detalle:       {res['confidence']}")
+
+    # 6. Generar y guardar el gráfico del Espacio de Versiones
+    output_dir = os.path.join(os.path.dirname(__file__), "..", "output")
+    os.makedirs(output_dir, exist_ok=True)
+    output_img = os.path.join(output_dir, "espacio_de_versiones_ejercicio_02.png")
     
-    for i, (x, c) in enumerate(datos, 1):
-        print(f"\n--- Paso {i}: Procesando instancia {x} (Clase: {'+' if c==1 else '-'}) ---")
-        if c == 1:
-            # Remover de G inconsistentes
-            G = [g for g in G if satisface(x, g)]
-            
-            # Generalizar S
-            nuevo_S = []
-            for s in S:
-                if not satisface(x, s):
-                    if s == ['∅'] * N_ATTRS:
-                        h_gen = list(x)
-                        if any(es_mas_general_o_igual(g, h_gen) for g in G):
-                            nuevo_S.append(h_gen)
-                    else:
-                        h_gen = list(s)
-                        for j in range(N_ATTRS):
-                            if h_gen[j] != x[j]:
-                                h_gen[j] = '?'
-                        if any(es_mas_general_o_igual(g, h_gen) for g in G):
-                            nuevo_S.append(h_gen)
-                else:
-                    nuevo_S.append(s)
-            S = nuevo_S
-        else:
-            # Remover de S inconsistentes
-            S = [s for s in S if not satisface(x, s)]
-            
-            # Especificar G
-            nuevo_G = []
-            for g in G:
-                if satisface(x, g):
-                    for j in range(N_ATTRS):
-                        if g[j] == '?':
-                            for val in ATRIBUTOS[NOMBRES_ATTRS[j]]:
-                                if val != x[j]:
-                                    h_esp = list(g)
-                                    h_esp[j] = val
-                                    if any(es_mas_general_o_igual(h_esp, s) for s in S):
-                                        if h_esp not in nuevo_G:
-                                            nuevo_G.append(h_esp)
-                else:
-                    if g not in nuevo_G:
-                        nuevo_G.append(g)
-            G = nuevo_G
-            
-        print(f"  S = {S}")
-        print(f"  G = {G}")
-        
-    return S, G
+    print("\n" + "=" * 80)
+    print(f" [*] GENERANDO GRÁFICO DEL ESPACIO DE VERSIONES...")
+    plot_version_space(
+        ce,
+        title="Espacio de Versiones ($VS_{H,D}$) - Ejercicio 2 (Fútbol Playa)",
+        save_path=output_img,
+        show_plot=False
+    )
+    print(f" [OK] Gráfico guardado en: {output_img}")
+    print("=" * 80)
+
 
 if __name__ == '__main__':
-    datos_entrenamiento = [
-        (('Soleado', 'Templado', 'Normal', 'Fuerte', 'Templada', 'Sin cambios'), 1),
-        (('Soleado', 'Templado', 'Alta', 'Fuerte', 'Templada', 'Sin cambios'), 1),
-        (('Lluvioso', 'Frío', 'Alta', 'Fuerte', 'Templada', 'Cambiante'), 0),
-        (('Soleado', 'Templado', 'Alta', 'Fuerte', 'Fría', 'Cambiante'), 1),
-    ]
-    
-    S_final, G_final = candidate_elimination(datos_entrenamiento)
-    
-    print("\n" + "=" * 60)
-    print("FRONTERAS FINALES DEL ESPACIO DE VERSIONES:")
-    print(f"S = {S_final}")
-    print(f"G = {G_final}")
-    print("=" * 60)
-    
-    instancias_test = [
-        (5, ('Soleado', 'Templado', 'Normal', 'Fuerte', 'Fría', 'Cambiante')),
-        (6, ('Lluvioso', 'Frío', 'Normal', 'Suave', 'Templada', 'Sin cambios')),
-        (7, ('Soleado', 'Templado', 'Normal', 'Suave', 'Templada', 'Sin cambios')),
-        (8, ('Soleado', 'Frío', 'Normal', 'Fuerte', 'Templada', 'Sin cambios')),
-    ]
-    
-    print("\nCLASIFICACIÓN DE INSTANCIAS DE PRUEBA:")
-    for num, inst in instancias_test:
-        votos_S = [satisface(inst, s) for s in S_final]
-        votos_G = [satisface(inst, g) for g in G_final]
-        
-        todos_S = all(votos_S)
-        algun_G = any(votos_G)
-        todos_G = all(votos_G)
-        
-        if todos_S:
-            veredict = "SÍ (Unánime / Positivo con certeza)"
-        elif not algun_G:
-            veredict = "NO (Unánime / Negativo con certeza)"
-        else:
-            veredict = f"AMBIGUO / INCERTIDUMBRE (Voto S: {votos_S}, Voto G: {votos_G})"
-            
-        print(f"Instancia {num}: {inst} -> {veredict}")
+    run_ejercicio_02()
