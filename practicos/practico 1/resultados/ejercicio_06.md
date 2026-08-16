@@ -14,15 +14,15 @@ Dados los siguientes ejemplos observados en el plano:
 
 ```text
   y ^
-  9 |                               
-  8 |               - (5,8)         
-  7 |                               
-  6 |       - (2,6)                 
-  5 |                       + (6,5) 
-  4 |               + (4,4)         - (9,4)
-  3 |   - (1,3)     + (5,3)         
-  2 |                               
-  1 |               - (5,1)         
+  9 |                   - (5,9)
+  8 |                                          
+  7 |       - (2,7)                          
+  6 |                       + (6,6)          
+  5 |               + (4,5)             - (9,5)
+  4 |   - (1,4)         + (5,4)              
+  3 |                                          
+  2 |                   - (5,2)              
+  1 |                                          
   0 +---+---+---+---+---+---+---+---+---+---> x
     0   1   2   3   4   5   6   7   8   9
 ```
@@ -37,41 +37,47 @@ iii. Si ud. desea enseñar el concepto $(3 \le x \le 5, \; 2 \le y \le 9)$: ¿cu
 ## Solución Detallada
 
 ### Resumen de Ejemplos de Entrenamiento:
-* **Positivos ($+$):** $P = \{ (4,4), (5,3), (6,5) \}$
-* **Negativos ($-$):** $N = \{ (1,3), (2,6), (5,1), (5,8), (9,4) \}$
+* **Positivos ($+$):** $P = \{ (4, 5), \; (5, 4), \; (6, 6) \}$
+* **Negativos ($-$):** $N = \{ (1, 4), \; (2, 7), \; (5, 2), \; (5, 9), \; (9, 5) \}$
 
 ---
 
 ### Parte i) Cálculo de los Conjuntos Frontera $S$ y $G$
 
 #### 1. Límite Específico ($S$):
-El límite más específico $S$ corresponde al **rectángulo envolvente mínimo (*Bounding Box*)** que contiene a todos los ejemplos positivos observados:
+El límite más específico $S$ corresponde al **rectángulo envolvente mínimo** que contiene a todos los ejemplos positivos observados en $P$:
 
-* Límites en $x$:
+* **Límites en $x$:**
   $$a_S = \min(x_+) = \min(4, 5, 6) = 4$$
   $$b_S = \max(x_+) = \max(4, 5, 6) = 6$$
-* Límites en $y$:
-  $$c_S = \min(y_+) = \min(4, 3, 5) = 3$$
-  $$d_S = \max(y_+) = \max(4, 3, 5) = 5$$
+* **Límites en $y$:**
+  $$c_S = \min(y_+) = \min(5, 4, 6) = 4$$
+  $$d_S = \max(y_+) = \max(5, 4, 6) = 6$$
 
-$$\mathbf{S = \{ [4 \le x \le 6] \land [3 \le y \le 5] \}}$$
+$$\mathbf{S = \{ [4 \le x \le 6] \land [4 \le y \le 6] \}}$$
+
+*(Verificación: $S$ clasifica como positivos a $(4,5), (5,4), (6,6)$ y excluye correctamente a todos los puntos negativos).*
 
 ---
 
 #### 2. Límite General ($G$):
-El límite general $G$ está formado por los rectángulos más amplios posibles que cubren a $S$ sin contener ningún ejemplo negativo de $N$:
+El límite general $G$ está formado por los rectángulos más amplios posibles que cubren a $S$ sin contener ningún punto negativo de $N$:
 
-* Restricciones impuestas por cada negativo $(x_n, y_n)$:
-  * $(1, 3) \implies x \ge 2$ (el borde izquierdo $a$ no puede ser $\le 1$).
-  * $(9, 4) \implies x \le 8$ (el borde derecho $b$ no puede ser $\ge 9$).
-  * $(5, 1) \implies y \ge 2$ (el borde inferior $c$ no puede ser $\le 1$).
-  * $(5, 8) \implies y \le 7$ (el borde superior $d$ no puede ser $\ge 8$).
-  * $(2, 6) \implies$ este punto está arriba a la izquierda. Como $a \ge 2$ y $d \le 7$, el punto $(2,6)$ es descartado naturalmente si $a \ge 3$ o si $d \le 5$. Con $a=2$ y $d \le 5$, o $a=3$ y $d \le 7$.
-  
-Por ende, las hipótesis más generales en $G$ son:
-$$\mathbf{G = \{ [2 \le x \le 8] \land [2 \le y \le 5], \; [3 \le x \le 8] \land [2 \le y \le 7] \}}$$
+* **Restricciones impuestas por los puntos negativos cardinales:**
+  * Para excluir $(1, 4)$: el borde izquierdo $a$ debe ser $> 1 \implies \mathbf{a \ge 2}$ ($x \ge 2$).
+  * Para excluir $(9, 5)$: el borde derecho $b$ debe ser $< 9 \implies \mathbf{b \le 8}$ ($x \le 8$).
+  * Para excluir $(5, 2)$: el borde inferior $c$ debe ser $> 2 \implies \mathbf{c \ge 3}$ ($y \ge 3$).
+  * Para excluir $(5, 9)$: el borde superior $d$ debe ser $< 9 \implies \mathbf{d \le 8}$ ($y \le 8$).
 
-*(Si se asume una cota rectangular global simple, $G = \{ [2 \le x \le 8] \land [2 \le y \le 7] \}$ descartando $(2,6)$ mediante la esquina).*
+* **Restricción impuesta por el punto negativo diagonal $(2, 7)$:**
+  El punto $(2, 7)$ caería dentro de una caja con $[2 \le x \le 8] \land [3 \le y \le 8]$. Para excluirlo manteniendo a $S = [4 \le x \le 6] \land [4 \le y \le 6]$, tenemos dos especializaciones mínimas posibles:
+  1. **Ajustar el borde izquierdo ($x$):** exigir $\mathbf{a \ge 3}$, lo que permite mantener el techo en $d \le 8$.
+     $$g_1 = [3 \le x \le 8] \land [3 \le y \le 8]$$
+  2. **Ajustar el borde superior ($y$):** exigir $\mathbf{d \le 6}$, lo que permite mantener el borde izquierdo en $a \ge 2$.
+     $$g_2 = [2 \le x \le 8] \land [3 \le y \le 6]$$
+
+Por lo tanto, el límite general es:
+$$\mathbf{G = \{ [3 \le x \le 8] \land [3 \le y \le 8], \; [2 \le x \le 8] \land [3 \le y \le 6] \}}$$
 
 ---
 
@@ -79,20 +85,23 @@ $$\mathbf{G = \{ [2 \le x \le 8] \land [2 \le y \le 5], \; [3 \le x \le 8] \land
 
 ```text
   y ^
-  8 |               - (5,8)         
-  7 |   + - - - - - - - - - - +  <- Techo de G (y <= 7)
-  6 |   |   - (2,6)           |     
-  5 |   |           +======+  |  <- Techo de S (y = 5)
-  4 |   |           | +  + |  |  - (9,4)
-  3 | - | (1,3)     | +    |  |  <- Piso de S (y = 3)
-  2 |   + - - - - - +======+ -+  <- Piso de G (y >= 2)
-  1 |               - (5,1)         
-  0 +---+---+---+---+---+---+---+---+---> x
-    0   1   2   3   4   5   6   7   8
-            ^       ^      ^   ^
-          x>=2     x=4    x=6 x<=8
-         (G izq)   (S)    (S) (G der)
+  9 |                   N              
+  8 |           + - - - - - - - - - +      <- Techo de g1
+  7 |       N   |               (g1)|        
+  6 |       + - | - +=======+ - - - |      <- Techo de g2 y S
+  5 |       |   |   | +  (S)|       |   N
+  4 |   N   |   |   +=======+   (g2)|      <- Piso de S
+  3 |       + - + - - - - - - - - - +      <- Piso de G
+  2 |                   N              
+  1 |                                          
+  0 +---+---+---+---+---+---+---+---+---+---> x
+    0   1   2   3   4   5   6   7   8   9
+            ^   ^   ^       ^       ^
+          x>=2 x>=3 x=4    x=6     x<=8
+          (g2) (g1)(S)    (S)     (G der)
 ```
+
+N: Puntos negativos
 
 ---
 
@@ -100,12 +109,15 @@ $$\mathbf{G = \{ [2 \le x \le 8] \land [2 \le y \le 5], \; [3 \le x \le 8] \land
 
 #### ¿Cuál convendría elegir?
 Conviene elegir un punto dentro de la **región de incertidumbre** (aquellos puntos contenidos dentro de $G$ pero que caen fuera de $S$), por ejemplo:
-* **Punto $(3, 4)$:** Si el oráculo responde **Positivo**, expande inmediatamente el límite izquierdo de $S$ a $x=3$. Si responde **Negativo**, ajusta el límite de $G$ a $x \ge 4$.
-* **Punto $(7, 4)$ o $(5, 6)$:** Permiten resolver las dudas sobre los límites derecho y superior respectivamente.
+* **Punto $(3, 5)$:** 
+  * Si el oráculo responde **Positivo (+)** $\implies$ expande el límite izquierdo de $S$ a $x=3$ y descarta a $g_2$.
+  * Si el oráculo responde **Negativo (-)** $\implies$ reduce el límite general de $G$ a $x \ge 4$ para ambas hipótesis.
+* **Punto $(5, 7)$:** Permite resolver la incertidumbre sobre la altura del borde superior ($y \le 8$ vs $y \le 6$).
+* **Punto $(5, 3)$ o $(7, 5)$:** Permiten ajustar el piso inferior o la pared derecha.
 
 #### ¿Cuál seguramente NO convendría elegir?
-1. **Puntos dentro de $S$ (ej. $(5, 4)$):** Se sabe con $100\%$ de certeza que son **positivos** en todas las hipótesis consistentes. Su consulta no aporta nada de información nueva.
-2. **Puntos fuera de $G$ (ej. $(0, 0)$, $(10, 10)$ o $(5, 9)$):** Se sabe con certeza que son **negativos** en todo $VS$. Tampoco aportan información.
+1. **Puntos dentro de $S$ (ej. $(5, 5)$ o $(4, 5)$):** Se sabe con $100\%$ de certeza que son **positivos** en todas las hipótesis consistentes del espacio de versiones. Su consulta aporta **cero información nueva**.
+2. **Puntos fuera de $G$ (ej. $(0, 0)$, $(1, 4)$, $(10, 10)$ o $(5, 9)$):** Se sabe con $100\%$ de certeza que son **negativos** en todo $VS$. Tampoco aportan información.
 
 ---
 
