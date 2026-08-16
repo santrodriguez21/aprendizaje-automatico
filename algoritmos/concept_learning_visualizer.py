@@ -112,47 +112,78 @@ def plot_version_space(
     if not include_intermediates:
         intermediate_set = set()
 
-    # Configuración de capas y posiciones con ancho dinámico
     g_list = sorted(list(g_set), key=lambda h: repr(h))
     int_list = sorted(list(intermediate_set), key=lambda h: repr(h))
     s_list = sorted(list(s_set), key=lambda h: repr(h))
     all_nodes = s_list + int_list + g_list
 
-    # Longitud máxima de texto para calcular espaciado
-    max_repr_len = max((len(repr(h)) for h in all_nodes), default=30)
-    max_layer_count = max(len(g_list), len(int_list), len(s_list), 1)
+    # Identificar el nivel de especificidad (k = cantidad de atributos fijos != '?')
+    def get_level(h: Hypothesis) -> int:
+        if h.is_null():
+            return 999
+        return sum(1 for v in h.values if v != Hypothesis.ANY_SYMBOL)
 
-    # Ancho y espaciado proporcional
+    levels = sorted(list(set(get_level(h) for h in all_nodes)))
+
+    
+    # Agrupar nodos por nivel de especificidad
+    nodes_by_level: Dict[int, List[Hypothesis]] = {}
+    for lvl in levels:
+        nodes_by_level[lvl] = [h for h in all_nodes if get_level(h) == lvl]
+
+    # Dimensionamiento dinámico de la figura
+    max_layer_count = max((len(nodes) for nodes in nodes_by_level.values()), default=1)
+    max_repr_len = max((len(repr(h)) for h in all_nodes), default=30)
+    
     node_spacing = max(6.5, (max_repr_len * 0.18) + 2.5)
     total_width = max_layer_count * node_spacing
     fig_width = max(18.0, total_width + 7.0)
+    fig_height = max(9.5, len(levels) * 2.5)
 
-    fig, ax = plt.subplots(figsize=(fig_width, 9.5), dpi=200)
+    fig, ax = plt.subplots(figsize=(fig_width, fig_height), dpi=200)
     fig.patch.set_facecolor("#FAFAFA")
     ax.set_facecolor("#FAFAFA")
 
     positions: Dict[Hypothesis, Tuple[float, float]] = {}
     start_x = 1.0
 
-    # Capa G (Superior, y=2.5)
-    for i, g in enumerate(g_list):
-        x = start_x + (i + 1) * (total_width / (len(g_list) + 1))
-        positions[g] = (x, 2.5)
+    # Asignar coordenadas Y proporcionales de arriba (más general) a abajo (más específica)
+    y_min, y_max = 0.6, fig_height * 0.3
+    if len(levels) > 1:
+        y_step = (y_max - y_min) / (len(levels) - 1)
+        level_y = {lvl: y_max - i * y_step for i, lvl in enumerate(levels)}
+    else:
+        level_y = {levels[0]: 1.5}
 
-    # Capa Intermedia (Medio, y=1.5)
-    for i, h in enumerate(int_list):
-        x = start_x + (i + 1) * (total_width / (len(int_list) + 1))
-        positions[h] = (x, 1.5)
+    # Posicionar nodos capa por capa de arriba hacia abajo usando baricentro
+    for i, lvl in enumerate(levels):
+        layer_nodes = nodes_by_level[lvl]
+        
+        if i == 0:
+            # Capa superior (G): ordenar alfabéticamente
+            layer_nodes = sorted(layer_nodes, key=lambda h: repr(h))
+        else:
+            # Capas intermedias e inferiores: ordenar por el baricentro de sus padres superiores
+            def get_barycenter(h: Hypothesis) -> float:
+                parent_xs = [positions[p][0] for p in positions if p.is_strictly_more_general(h)]
+                if parent_xs:
+                    return sum(parent_xs) / len(parent_xs)
+                return total_width / 2.0
+            
+            layer_nodes = sorted(layer_nodes, key=lambda h: (get_barycenter(h), repr(h)))
 
-    # Capa S (Inferior, y=0.5)
-    for i, s in enumerate(s_list):
-        x = start_x + (i + 1) * (total_width / (len(s_list) + 1))
-        positions[s] = (x, 0.5)
+        nodes_by_level[lvl] = layer_nodes
+        
+        # Asignar coordenadas X equidistantes
+        for j, h in enumerate(layer_nodes):
+            x = start_x + (j + 1) * (total_width / (len(layer_nodes) + 1))
+            positions[h] = (x, level_y[lvl])
 
-    # Dibujar aristas de generalización (S -> Intermedias -> G o S -> G)
+    # Dibujar aristas de generalización (de específica hacia general)
     for h_spec in all_nodes:
         for h_gen in all_nodes:
             if h_gen.is_strictly_more_general(h_spec):
+                # Verificar relación directa (transitividad mínima)
                 is_direct = True
                 for h_mid in all_nodes:
                     if h_gen.is_strictly_more_general(h_mid) and h_mid.is_strictly_more_general(h_spec):
@@ -177,10 +208,10 @@ def plot_version_space(
                         )
                     )
 
-    # Ajuste de tamaño de fuente según longitud de caracteres
+    # Ajuste de fuente según longitud de caracteres
     font_size = 9 if max_repr_len > 35 else 10
 
-    # Dibujar Cajas de Nodos y texto completo
+    # Dibujar Cajas de Nodos
     def draw_node_box(h: Hypothesis, x: float, y: float, bg_color: str, border_color: str, text_color: str, tag: str):
         text_str = f"{tag}\n{repr(h)}"
         bbox_props = dict(
@@ -217,14 +248,19 @@ def plot_version_space(
         x, y = positions[s]
         draw_node_box(s, x, y, "#E8F8F5", "#27AE60", "#117A65", "[Límite Específico S]")
 
-    # Anotaciones de Capas a la izquierda con margen amplio
-    ax.text(-1.2, 2.5, "▲ Más General\n(Límite G)", fontsize=11, fontweight="bold", color="#2980B9", va="center", ha="right")
-    if int_list:
-        ax.text(-1.2, 1.5, "◆ Espacio de Versiones\n(Consistentes)", fontsize=10, fontstyle="italic", color="#7F8C8D", va="center", ha="right")
-    ax.text(-1.2, 0.5, "▼ Más Específica\n(Límite S)", fontsize=11, fontweight="bold", color="#27AE60", va="center", ha="right")
+    # Anotaciones de Capas a la izquierda
+    top_lvl = levels[0]
+    bottom_lvl = levels[-1]
+    
+    ax.text(-1.2, level_y[top_lvl], "▲ Más General\n(Límite G)", fontsize=11, fontweight="bold", color="#2980B9", va="center", ha="right")
+    
+    for lvl in levels[1:-1]:
+        ax.text(-1.2, level_y[lvl], f"◆ Capa Intermedia\n(k = {lvl} fijos)", fontsize=10, fontstyle="italic", color="#7F8C8D", va="center", ha="right")
+        
+    ax.text(-1.2, level_y[bottom_lvl], "▼ Más Específica\n(Límite S)", fontsize=11, fontweight="bold", color="#27AE60", va="center", ha="right")
 
     ax.set_xlim(-3.5, total_width + 3.5)
-    ax.set_ylim(0.0, 3.2)
+    ax.set_ylim(0.0, y_max + 0.7)
     ax.set_title(f"{title}\n(Orden Parcial General-Específico)", fontsize=14, fontweight="bold", pad=18, color="#1A252C")
     ax.axis("off")
 
@@ -239,4 +275,5 @@ def plot_version_space(
             pass
 
     plt.close(fig)
+
 
