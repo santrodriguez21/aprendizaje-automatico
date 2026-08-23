@@ -13,6 +13,7 @@ Guías de ejercicios, enunciados y letras de los trabajos prácticos:
 ---
 
 ### 📂 [Práctico 2: Árboles de Decisión e ID3](./practico%202/)
-- 📑 [**`Letra y Enunciados`**](./practico%202/letra/)
-- 📁 [**`Resultados / Notebooks`**](./practico%202/resultados/)
+- 📄 [**`practico_2.md`**](./practico%202/letra/practico_2.md): Enunciados completos con funciones booleanas, entropía, ID3, atributos continuos, poda y sesgos.
+- 📑 [**`practico_2.pdf`**](./practico%202/letra/practico_2.pdf): Letra original en PDF.
+- 📁 [**`Resultados / Notebooks`**](./practico%202/resultados/): Resoluciones y notebooks interactivos.
 
