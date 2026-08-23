@@ -4,6 +4,10 @@ Compilado de evaluaciones de cursos anteriores (2018–2025) de la materia **Apr
 
 ---
 
+> 📖 [**`GUIA_ESTUDIO_EXAMEN.md`**](./GUIA_ESTUDIO_EXAMEN.md): **Guía Maestra de Estudio para el Examen Presencial** (Recetas de resolución mecánica, banco de preguntas teóricas con respuestas modelo y chuletario de fórmulas).
+
+---
+
 ## 📑 Tabla de Evaluaciones y Soluciones
 
 | Año / Edición | Letra (Enunciado) | Solución | Temas Principales |
