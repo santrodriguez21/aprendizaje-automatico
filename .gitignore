@@ -16,6 +16,9 @@ outputs/
 *.jpeg
 *.svg
 
+# Allow documentation & evaluation images
+!evaluaciones/**/img/*
+
 # Virtual environments
 venv/
 .venv/
