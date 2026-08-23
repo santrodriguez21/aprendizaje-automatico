@@ -53,18 +53,59 @@ Guía rápida de referencia con la notación formal, definiciones y conceptos fu
 | **Forma Normal Disyuntiva (DNF)** | Disyunción de ramas positivas | Expresión lógica de la forma $(r_1) \lor (r_2) \lor \dots \lor (r_k)$ de las ramas que dan Sí. |
 | **$\text{Entropía}(S)$** | $-\sum_{i=1}^c p_i \log_2(p_i)$ | Mide la impureza, incertidumbre o cantidad promedio de bits requeridos para codificar $S$. |
 | **$p_+$ / $p_-$** | Proporciones de clases | Fracción de ejemplos positivos y negativos en $S$ ($\text{Entropía} = -p_+\log_2(p_+) - p_-\log_2(p_-)$). |
-| **$\text{Ganancia}(S, A)$** | $\text{Ent}(S) - \sum_{v \in Valores(A)} \frac{\|S_v\|}{\|S\|} \text{Ent}(S_v)$ | **Ganancia de Información:** Reducción esperada en la entropía al particionar por el atributo $A$. |
-| **$Valores(A)$** | Dominio del atributo | Conjunto de valores posibles que puede tomar el atributo $A$. |
-| **$S_v$** | $\{ x \in S \mid x[A] = v \}$ | Subconjunto de ejemplos de $S$ donde el atributo $A$ tiene el valor $v$. |
+| **$\text{Ganancia}(S, A)$** | $\text{Ent}(S) - \sum_{v \in \text{Val}(A)} \frac{\|S_v\|}{\|S\|} \text{Ent}(S_v)$ | **Ganancia de Información:** Reducción esperada en la entropía al particionar por el atributo $A$. |
+| **$\text{SplitInformation}(S, A)$** | $-\sum_{v \in \text{Val}(A)} \frac{\|S_v\|}{\|S\|} \log_2\left(\frac{\|S_v\|}{\|S\|}\right)$ | Entropía intrínseca de la partición del atributo $A$ (mide cuántas ramas genera). |
+| **$\text{GainRatio}(S, A)$** | $\frac{\text{Ganancia}(S, A)}{\text{SplitInformation}(S, A)}$ | **Tasa de Ganancia:** Criterio alternativo que penaliza atributos con muchos valores únicos. |
+| **$\text{min\_info\_gain}$** | Hiperparámetro $\ge 0$ | Umbral de parada temprana (*pre-pruning*); detiene la recursión si la ganancia no supera el umbral. |
+| **Atributos Continuos** | Umbral $c = \frac{v_i + v_{i+1}}{2}$ | Discretización dinámica probando puntos de corte medios entre cambios de clase adyacentes. |
+| **Sobreajuste (*Overfitting*)** | $\text{error}_{\text{train}}(h) < \text{error}_{\text{train}}(h')$ y $\text{error}_D(h) > \text{error}_D(h')$ | El modelo memoriza el ruido del conjunto de entrenamiento y pierde capacidad de generalización. |
+| **Poda Reducida (*Reduced Error Pruning*)** | Post-poda con validación | Reemplaza un subárbol por una hoja si la exactitud sobre el conjunto de validación no disminuye. |
 | **Algoritmo ID3** | Top-Down voraz sin backtracking | Construye el árbol eligiendo recursivamente el atributo con mayor $\text{Ganancia}(S, A)$. |
 
 ---
 
-## 🧠 4. Sesgo Inductivo y Principios de Búsqueda (Clases 2 y 3)
+## 🔮 4. Aprendizaje Bayesiano y Naïve Bayes (Clase 4)
+
+| Símbolo / Término | Definición / Notación | Significado / Contexto de la Clase |
+| :--- | :--- | :--- |
+| **Teorema de Bayes** | $P(h \mid D) = \frac{P(D \mid h) P(h)}{P(D)}$ | Actualiza la probabilidad de una hipótesis $h$ a la luz de los datos observados $D$. |
+| **$P(h)$ (Probabilidad a Priori)** | Probabilidad inicial | Conocimiento o creencia previa sobre la verosimilitud de la hipótesis $h$ antes de ver $D$. |
+| **$P(D \mid h)$ (Verosimilitud / Likelihood)** | Probabilidad de los datos | Probabilidad de observar los datos $D$ bajo el supuesto de que la hipótesis $h$ es verdadera. |
+| **$P(D)$ (Probabilidad Marginal)** | $\sum_{h_i \in H} P(D \mid h_i) P(h_i)$ | Factor de normalización constante independiente de la hipótesis $h$. |
+| **$P(h \mid D)$ (Probabilidad a Posteriori)** | Probabilidad actualizada | Grado de certeza sobre $h$ una vez incorporada la evidencia de los datos $D$. |
+| **Hipótesis MAP ($h_{\text{MAP}}$)** | $\arg\max_{h \in H} P(D \mid h) P(h)$ | **Máximo a Posteriori:** Hipótesis más probable del espacio $H$ dados los datos $D$. |
+| **Hipótesis ML ($h_{\text{ML}}$)** | $\arg\max_{h \in H} P(D \mid h)$ | **Máxima Verosimilitud:** Hipótesis que maximiza la probabilidad de los datos observados (asume priors uniformes). |
+| **Clasificador Bayesiano Sencillo (Naïve Bayes / CBS)** | $c_{\text{NB}} = \arg\max_{c_j} P(c_j) \prod_{i=1}^n P(a_i \mid c_j)$ | Asume independencia condicional de los atributos dada la clase $c_j$. |
+| **Suposición de Independencia Condicional** | $P(a_1, \dots, a_n \mid c) = \prod_{i=1}^n P(a_i \mid c)$ | Simplificación fundamental de Naïve Bayes que reduce exponencialmente la cantidad de parámetros a estimar. |
+| **$m$-estimador de Probabilidad** | $\hat{P}(a_i \mid c) = \frac{n_c + m \cdot p}{n + m}$ | Técnica de suavizado para evitar probabilidades nulas ($0$). $m$ = peso de la muestra virtual, $p$ = prior uniforme ($1/k$). |
+| **Suavizado de Laplace** | $m = k = \|\text{Val}(A)\|$, $p = \frac{1}{k}$ | Caso particular del $m$-estimador que suma $+1$ a cada conteo: $\hat{P} = \frac{n_c + 1}{n + k}$. |
+| **Inferencia Logarítmica** | $\arg\max_{c} \left[ \log P(c) + \sum_{i} \log P(a_i \mid c) \right]$ | Transforma productos en sumas para evitar el desbordamiento por subflujo numérico (*underflow*). |
+| **Clasificador Bayesiano Óptimo (BOC)** | $\arg\max_{v_j \in V} \sum_{h_i \in H} P(v_j \mid h_i) P(h_i \mid D)$ | Combina las predicciones de todas las hipótesis ponderadas por $P(h_i \mid D)$. Maximiza la probabilidad de acierto. |
+
+---
+
+## 🧠 5. Sesgo Inductivo y Principios de Búsqueda (Clases 2, 3 y 4)
 
 | Símbolo / Término | Definición / Notación | Significado / Contexto de la Clase |
 | :--- | :--- | :--- |
 | **$B$ (Sesgo Inductivo)** | $(B \land D \land x_i) \vdash L(D, x_i)$ | Conjunto mínimo de suposiciones que junto a $D$ permite deducir la clasificación de $x_i$. |
-| **Sesgo Preferencial** | Preferencia de búsqueda | El espacio $H$ es completo (contiene todas las funciones), pero el algoritmo prefiere unas sobre otras (ej. ID3 prefiere árboles más cortos). |
-| **Sesgo Restrictivo** | Restricción del lenguaje | El espacio $H$ es incompleto a priori (ej. Candidate-Elimination solo permite conjunciones). |
+| **Sesgo Preferencial** | Preferencia de búsqueda | El espacio $H$ es completo (contiene todas las funciones), pero el algoritmo prefiere unas sobre otras (ej. ID3 prefiere árboles más cortos; FIND-S prefiere la más específica). |
+| **Sesgo Restrictivo** | Restricción del lenguaje | El espacio $H$ es incompleto a priori (ej. Candidate-Elimination solo permite conjunciones; Regresión Lineal solo hiperplanos). |
 | **Navaja de Ockham** | Principio de parsimonia | *"Cuando se ofrecen varias explicaciones, es preferible la más simple que se ajuste a los datos."* (William de Ockham, S.XIV). |
+
+---
+
+## 📊 6. Métricas de Evaluación y Validación (Clases 1 a 4)
+
+| Símbolo / Término | Definición / Notación | Significado / Contexto de la Clase |
+| :--- | :--- | :--- |
+| **Matriz de Confusión** | $\begin{pmatrix} \text{VP} & \text{FN} \\ \text{FP} & \text{VN} \end{pmatrix}$ | Tabla cruzada entre valores reales y predicciones del modelo. |
+| **Acierto / Exactitud (*Accuracy*)** | $\frac{\text{VP} + \text{VN}}{\text{Total}}$ | Proporción de predicciones correctas sobre el total. Engañosa con clases desbalanceadas. |
+| **Precisión ($P$)** | $\frac{\text{VP}}{\text{VP} + \text{FP}}$ | Fracción de instancias clasificadas como positivas que realmente son positivas. |
+| **Exhaustividad / Sensibilidad (*Recall* / $R$)** | $\frac{\text{VP}}{\text{VP} + \text{FN}}$ | Fracción de instancias realmente positivas que el modelo logró detectar. |
+| **Medida $F_1$ (*F1-Score*)** | $2 \cdot \frac{P \cdot R}{P + R} = \frac{2\text{VP}}{2\text{VP} + \text{FP} + \text{FN}}$ | Media armónica entre Precisión y Recall; balancea ambos objetivos. |
+| **Macro-Average** | $\frac{1}{K} \sum_{k=1}^K M_k$ | Promedio simple de la métrica $M$ sobre las $K$ clases (da igual peso a cada clase sin importar su tamaño). |
+| **Micro-Average** | $\frac{\sum \text{VP}_k}{\sum (\text{VP}_k + \text{FP}_k)}$ | Calcula la métrica global agregando todas las instancias (dominado por clases mayoritarias). |
+| **Validación Cruzada $k$-fold** | Partición en $k$ bloques | Divide el dataset en $k$ particiones; entrena en $k-1$ y evalúa en la restante de forma rotativa. |
+| **Muestreo Estratificado** | Mantiene proporciones de clase | Garantiza que cada *fold* o partición contenga la misma distribución porcentual de clases que el dataset original. |
+| **Partición Temporal** | *Train* $\le t_0$, *Test* $> t_0$ | Partición cronológica estricta para evitar *data leakage* en datos de series de tiempo. |
