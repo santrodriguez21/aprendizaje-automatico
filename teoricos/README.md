@@ -27,3 +27,9 @@ Material conceptual, notas, diapositivas y ejemplos organizados por cada clase:
 - 📄 [**`03-arboles-de-decision-e-id3.md`**](./clase%203%20-%20decision_trees/03-arboles-de-decision-e-id3.md): Representación de árboles (DNF), algoritmo ID3, entropía de Shannon, ganancia de información, sesgo inductivo (preferencial vs. restrictivo), navaja de Ockham y referencias académicas.
 - 📑 [**`3_arboles_de_decision.pdf`**](./clase%203%20-%20decision_trees/3_arboles_de_decision.pdf): Diapositivas originales de la clase.
 
+---
+
+### 📂 [Clase 4: Aprendizaje Bayesiano](./clase%204%20-%20aprendizaje%20bayesiano/)
+- 📄 [**`04-aprendizaje-bayesiano.md`**](./clase%204%20-%20aprendizaje%20bayesiano/04-aprendizaje-bayesiano.md): Teorema de Bayes, hipótesis MAP y ML, Clasificador Bayesiano Óptimo, Naive Bayes, $m$-estimador, clasificación de texto y log-probabilidades.
+- 📑 [**`4_bayes.pdf`**](./clase%204%20-%20aprendizaje%20bayesiano/4_bayes.pdf): Diapositivas originales de la clase.
+

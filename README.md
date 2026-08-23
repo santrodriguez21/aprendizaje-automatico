@@ -15,13 +15,18 @@ Repositorio dedicado al estudio, resolución de trabajos prácticos e implementa
 aprendizaje-automatico/
 ├── teoricos/               # Diapositivas, notas conceptuales y glosario
 │   ├── GLOSARIO.md         # Glosario formal de términos y notación matemática
-│   ├── clase 1 - intro/
+│   ├── clase 1 - tipos de aprendizaje/
 │   ├── clase 2 - concept_learning/
-│   └── clase 3 - arboles_de_decision/
+│   ├── clase 3 - decision_trees/
+│   └── clase 4 - aprendizaje bayesiano/
 ├── practicos/              # Trabajos prácticos de la materia
-│   └── practico 1/
-│       ├── letra/          # Enunciados de los ejercicios
-│       └── resultados/     # Resoluciones detalladas y scripts ejecutables en Python
+│   ├── practico 1/         # Concept Learning, Find-S y Candidate Elimination
+│   └── practico 2/         # Árboles de Decisión e ID3
+├── laboratorio/            # Proyectos prácticos con datos reales
+│   └── tarea 1/            # Predicción de resultados del fútbol uruguayo (1932–2025)
+├── evaluaciones/           # Exámenes y parciales anteriores (2018–2025)
+│   ├── letras/             # Enunciados de las pruebas en Markdown y PDF
+│   └── soluciones/         # Resoluciones analíticas detalladas y trazas
 ├── algoritmos/             # Módulos reutilizables y visualizadores interactivos
 │   ├── concept_learning.py
 │   ├── concept_learning_visualizer.py
