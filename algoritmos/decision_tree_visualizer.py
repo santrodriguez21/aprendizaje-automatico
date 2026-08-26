@@ -6,7 +6,7 @@ Proporciona utilidades para:
 - Tabla explicativa de cálculos de entropía y ganancia de información.
 """
 
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Tuple
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from collections import Counter

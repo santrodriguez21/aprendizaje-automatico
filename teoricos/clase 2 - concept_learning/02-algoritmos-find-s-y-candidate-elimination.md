@@ -232,7 +232,7 @@ Una vez obtenido $VS_{H,D}$, para clasificar una instancia nueva $x_{nueva}$:
 
 ### Sesgo inductivo de nuestros algoritmos:
 * **Candidate-Elimination:** El concepto objetivo $c$ está contenido en el espacio de hipótesis $H$ ($c \in H$) y las instancias de entrenamiento no contienen ruido.
-* **Find-S:** Asume que $c \in H$, no hay ruido, y además asume una preferencia por la hipótesis más específica posible (sesgo de preferencia / búsqueda).
+* **Find-S:** Asume que $c \in H$, no hay ruido, y además asume una preferencia por la hipótesis más específica posible (sesgo de preferencia / búsqueda). Asume que el concepto objetivo es una conjunción pura de restricciones (ej. $A \land B \land C$). Si el concepto real fuera una disyunción ($A \lor B$), el algoritmo fallará porque su sesgo no le permite considerarlo.
 
 > [!IMPORTANT]
 > **Sin sesgo inductivo, un algoritmo no puede generalizar.** Si el espacio de hipótesis permitiera todas las funciones booleanas posibles ($2^{|X|}$), no habría forma de predecir la etiqueta de ningún ejemplo no visto previamente.
