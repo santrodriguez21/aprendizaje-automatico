@@ -95,17 +95,52 @@ Guía rápida de referencia con la notación formal, definiciones y conceptos fu
 
 ---
 
-## 📊 6. Métricas de Evaluación y Validación (Clases 1 a 4)
+## 📊 6. Métricas de Evaluación y Validación Estadística (Clases 1 a 5)
 
 | Símbolo / Término | Definición / Notación | Significado / Contexto de la Clase |
 | :--- | :--- | :--- |
-| **Matriz de Confusión** | $\begin{pmatrix} \text{VP} & \text{FN} \\ \text{FP} & \text{VN} \end{pmatrix}$ | Tabla cruzada entre valores reales y predicciones del modelo. |
-| **Acierto / Exactitud (*Accuracy*)** | $\frac{\text{VP} + \text{VN}}{\text{Total}}$ | Proporción de predicciones correctas sobre el total. Engañosa con clases desbalanceadas. |
-| **Precisión ($P$)** | $\frac{\text{VP}}{\text{VP} + \text{FP}}$ | Fracción de instancias clasificadas como positivas que realmente son positivas. |
-| **Exhaustividad / Sensibilidad (*Recall* / $R$)** | $\frac{\text{VP}}{\text{VP} + \text{FN}}$ | Fracción de instancias realmente positivas que el modelo logró detectar. |
-| **Medida $F_1$ (*F1-Score*)** | $2 \cdot \frac{P \cdot R}{P + R} = \frac{2\text{VP}}{2\text{VP} + \text{FP} + \text{FN}}$ | Media armónica entre Precisión y Recall; balancea ambos objetivos. |
-| **Macro-Average** | $\frac{1}{K} \sum_{k=1}^K M_k$ | Promedio simple de la métrica $M$ sobre las $K$ clases (da igual peso a cada clase sin importar su tamaño). |
-| **Micro-Average** | $\frac{\sum \text{VP}_k}{\sum (\text{VP}_k + \text{FP}_k)}$ | Calcula la métrica global agregando todas las instancias (dominado por clases mayoritarias). |
-| **Validación Cruzada $k$-fold** | Partición en $k$ bloques | Divide el dataset en $k$ particiones; entrena en $k-1$ y evalúa en la restante de forma rotativa. |
-| **Muestreo Estratificado** | Mantiene proporciones de clase | Garantiza que cada *fold* o partición contenga la misma distribución porcentual de clases que el dataset original. |
-| **Partición Temporal** | *Train* $\le t_0$, *Test* $> t_0$ | Partición cronológica estricta para evitar *data leakage* en datos de series de tiempo. |
+| **Matriz de Confusión** | $\begin{pmatrix} \text{VP} & \text{FN} \\ \text{FP} & \text{VN} \end{pmatrix}$ | Tabla cruzada entre valores reales y predicciones del modelo (binaria o $K \times K$ multiclase). |
+| **Acierto / Exactitud (*Accuracy*)** | $\frac{\text{VP} + \text{VN}}{\text{Total}}$ | Proporción de predicciones correctas sobre el total. Engañosa y poco informativa con clases desbalanceadas. |
+| **Precisión ($P$)** | $\frac{\text{VP}}{\text{VP} + \text{FP}}$ | Fracción de instancias predichas como positivas que realmente lo son. |
+| **Exhaustividad / Sensibilidad (*Recall* / $R$)** | $\frac{\text{VP}}{\text{VP} + \text{FN}}$ | Fracción de instancias reales positivas que el modelo logró recuperar/detectar. |
+| **Medida $F_\beta$** | $\frac{(1 + \beta^2) P \cdot R}{\beta^2 P + R}$ | Media armónica ponderada; $\beta$ modula la importancia relativa del Recall respecto a la Precisión. |
+| **Medida $F_1$ (*F1-Score*)** | $2 \cdot \frac{P \cdot R}{P + R} = \frac{2\text{VP}}{2\text{VP} + \text{FP} + \text{FN}}$ | Caso balanceado ($\beta=1$); media armónica entre Precisión y Recall. |
+| **Macro-Average** | $\frac{1}{K} \sum_{k=1}^K M_k$ | Promedio aritmético simple de la métrica sobre las $K$ clases (trata a todas las clases por igual, ideal para evaluar clases minoritarias). |
+| **Micro-Average** | $\frac{\sum \text{VP}_k}{\sum (\text{VP}_k + \text{FP}_k)}$ | Agregación global de aciertos y errores sumando todas las instancias. En multiclase exclusivo coincide con el *Accuracy*. |
+| **Curva Precision-Recall (PR)** | Curva $P$ vs $R$ | Evolución de la Precisión en función del Recall al variar el umbral continuo de decisión $\theta \in [0, 1]$. |
+| **Área bajo la curva PR / AP** | *Average Precision* | Cuantifica la solidez global del clasificador a lo largo de todos los umbrales posibles (área bajo la curva PR). |
+| **Índice de Jaccard (IoU)** | $IJ(A, B) = \frac{\|A \cap B\|}{\|A \cup B\|}$ | Métrica por instancia para problemas **multietiqueta** (*Multi-label*); mide la proporción de solapamiento entre etiquetas reales y predichas. |
+| **Error en la Muestra ($error_S(h)$)** | $\frac{1}{n} \sum \delta(y, h(x))$ | Frecuencia observada de errores de la hipótesis $h$ sobre la muestra $S$ de tamaño $n$. Es un estimador insesgado de $error_D(h)$. |
+| **Error Real / Poblacional ($error_D(h)$)** | $P_{x \sim \mathcal{D}}(y \ne h(x))$ | Probabilidad de que $h$ clasifique erróneamente una nueva instancia aleatoria de la distribución $\mathcal{D}$. |
+| **Intervalo de Confianza al 95%** | $error_S(h) \pm 1.96 \sqrt{\frac{error_S(1-error_S)}{n}}$ | Rango de valores donde reside el error real con $95\%$ de certeza (aproximación normal de la binomial según Mitchell Cap. 5). |
+| **Línea Base (*Baseline*)** | Modelo de referencia mínimo | Rendimiento mínimo que cualquier modelo útil debe superar (ej. clasificador mayoritario *Zero-Rule* o asignación aleatoria). |
+| **Línea de Tope (*Ceiling / Bayes Error*)** | Límite superior alcanzable | Cota superior teórica del rendimiento (desempeño humano experto o error irreducible de Bayes por solapamiento probabilístico). |
+| **Validación Cruzada $k$-fold** | Partición en $k$ bloques disjuntos | Divide el dataset en $k$ partes; entrena en $k-1$ y valida en la restante rotativamente, reportando media y varianza ($\mu \pm \text{sem}$). |
+| **Muestreo Estratificado** | Mantiene proporciones de clase | Fuerza que cada partición (*fold*, *train*, *test*) preserve exactamente la distribución porcentual original de cada clase. |
+
+---
+
+## 🛠️ 7. Metodología, Preprocesamiento e Ingeniería de Atributos (Clase 5)
+
+| Símbolo / Término | Definición / Notación | Significado / Contexto de la Clase |
+| :--- | :--- | :--- |
+| **Fuga de Información (*Data Leakage*)** | Contaminación de datos | Utilizar información del conjunto de prueba/validación para calcular transformaciones o estadísticos durante el preprocesamiento o entrenamiento. |
+| **Regla contra Data Leakage** | `fit` solo en Train | Cualquier cálculo de medias, medianas, escalas o vocabularios **debe realizarse exclusivamente sobre el conjunto de entrenamiento**. |
+| **Imputación de Faltantes** | Media, mediana, moda o centinela | Estrategias para sustituir valores nulos (`NaN`): media/mediana para continuos, moda para categóricos o códigos de advertencia (`UNK`). |
+| **Codificación Ordinal / Label Encoding** | $c_j \to \{0, \dots, k-1\}$ | Asigna enteros consecutivos a categorías. Solo válido para variables ordinales con jerarquía real, riesgoso en variables nominales puras. |
+| **One-Hot Encoding (OHE)** | $k$ columnas binarias ($0/1$) | Genera un atributo dummy por cada categoría. Evita inducir orden métrico artificial en atributos nominales. |
+| **Bolsa de Palabras (BoW)** | Vector de dimensión $\|V\|$ | Representación de texto en base a frecuencia de términos (binario, conteo absoluto o frecuencia relativa normalizada). |
+| **TF-IDF** | $\text{tf}(w,d) \cdot \log\left(\frac{N}{n_w}\right)$ | Ponderación que combina la frecuencia local en el documento con la rareza global en el corpus. Destaca palabras clave distintivas. |
+| **N-gramas (*Bag-of-Ngrams*)** | Secuencias de $n$ palabras | Captura contexto y orden léxico local contiguo (ej. bi-gramas `"no funciona"`, tri-gramas `"árbol de decisión"`). |
+| **Word Embeddings** | Vectores densos $\mathbb{R}^d$ ($d \approx 50\text{--}300$) | Representaciones continuas de baja dimensionalidad aprendidas por contexto semántico; resuelven la alta dispersión de BoW. |
+| **Escalado Min-Max** | $x_s = \frac{x - x_{\min}}{x_{\max} - x_{\min}}$ | Transforma atributos numéricos al intervalo acotado $[0, 1]$. Sensible a valores atípicos (*outliers*). |
+| **Estandarización Z-Score** | $x_{\text{norm}} = \frac{x - \mu}{\sigma}$ | Centra la variable en $\mu = 0$ con dispersión $\sigma = 1$. Crucial para k-NN, SVM, Descenso por Gradiente y PCA. |
+| **Random Oversampling / Undersampling** | Remuestreo de clases | Duplicación aleatoria con reemplazo de la clase minoritaria (oversampling) o descarte aleatorio de la mayoritaria (undersampling). |
+| **Algoritmo SMOTE** | $x_i + \lambda (x_{zi} - x_i)$ | *Synthetic Minority Over-sampling Technique:* Genera instancias sintéticas plausibles por interpolación lineal entre vecinos $k$-NN. |
+| **Algoritmo NearMiss** | Selección de prototipos | Submuestreo de la clase mayoritaria conservando solo aquellos ejemplos más cercanos a la frontera con la clase minoritaria. |
+| **Métodos de Filtrado (*Filter*)** | Univariados sin modelo | Selección de atributos previa al modelado mediante pruebas estadísticas independientes ($\chi^2$, Umbral de Varianza, Información Mutua). |
+| **Métodos Envolventes (*Wrappers*)** | Búsqueda guiada por modelo | Evalúan subconjuntos sucesivos de atributos entrenando iterativamente un algoritmo de aprendizaje (ej. *Recursive Feature Elimination* - RFE). |
+| **Métodos Embebidos (*Embedded*)** | Selección intrínseca | La selección de atributos ocurre de manera natural dentro del algoritmo durante el ajuste (ej. divisiones en árboles de decisión, penalización L1 Lasso). |
+| **GridSearchCV / RandomizedSearchCV** | Optimización de hiperparámetros | Búsqueda exhaustiva sobre una grilla discreta (*Grid*) o muestreo aleatorio probabilístico sobre distribuciones (*Randomized*). |
+| **Pipeline y ColumnTransformer** | Ensamblado modular en Scikit-Learn | Encapsula transformaciones heterogéneas por tipo de columna y el estimador final, garantizando reproducibilidad y ausencia de *data leakage*. |
+

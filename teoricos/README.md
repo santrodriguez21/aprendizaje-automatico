@@ -2,7 +2,7 @@
 
 Material conceptual, notas, diapositivas y ejemplos organizados por cada clase:
 
-* 📖 [**`GLOSARIO.md`**](./GLOSARIO.md): **Glosario de Términos y Notación Formal** (organizado por temática: Fundamentos, Concept Learning, Árboles de Decisión, Sesgos y Métricas).
+* 📖 [**`GLOSARIO.md`**](./GLOSARIO.md): **Glosario de Términos y Notación Formal** (organizado por temática: Fundamentos, Concept Learning, Árboles de Decisión, Bayes, Sesgos, Métricas Estadísticas y Metodología/Preprocesamiento).
 
 ---
 
@@ -40,4 +40,13 @@ Material conceptual, notas, diapositivas y ejemplos organizados por cada clase:
   - 📓 [**`04_aprendizaje_bayesiano_y_naive_bayes.ipynb`**](./clase%204%20-%20aprendizaje%20bayesiano/ejemplos/04_aprendizaje_bayesiano_y_naive_bayes.ipynb): Notebook interactivo paso a paso con Naive Bayes, $m$-estimador, Laplace, trazas y Clasificador Bayesiano Óptimo.
   - 🐍 [**`demo_bayes.py`**](./clase%204%20-%20aprendizaje%20bayesiano/ejemplos/demo_bayes.py): Script de consola para ejecutar inferencia bayesiana y trazas explicativas.
   - 📊 Visualización provista por [**`algoritmos.bayesian_visualizer`**](../../algoritmos/bayesian_visualizer.py).
+
+---
+
+### 📂 [Clase 5: Metodologías para Clasificación y Evaluación](./clase%205%20-%20metodolog%C3%ADas/)
+- 📄 [**`05-metodologia-para-clasificacion.md`**](./clase%205%20-%20metodolog%C3%ADas/05-metodologia-para-clasificacion.md): Metodología de 4 fases (Preprocesamiento, Partición, Entrenamiento y Evaluación), manejo de faltantes, One-Hot, TF-IDF, estandarización/normalización, estratificación, SMOTE, NearMiss, selección de atributos (Filter, Wrapper, Embedded), validación cruzada $k$-fold, GridSearchCV, Pipelines y ColumnTransformer, matrices de confusión binarias y multiclase, teoría estadística de Tom Mitchell (intervalos de confianza al 95%), Precision, Recall, $F_1$, Macro/Micro average, curvas PR, índice de Jaccard multietiqueta y baselines.
+- 📑 [**`5_metodologia.pdf`**](./clase%205%20-%20metodolog%C3%ADas/5_metodologia.pdf): Diapositivas originales de la clase.
+- 🧪 **Código y Pipelines** ([`clase 5 - metodologías/`](./clase%205%20-%20metodolog%C3%ADas/)):
+  - 📓 [**`demo_pipeline.ipynb`**](./clase%205%20-%20metodolog%C3%ADas/demo_pipeline.ipynb): Notebook práctico con Pipeline, ColumnTransformer, SimpleImputer, OneHotEncoder, StratifiedKFold y GridSearchCV.
+
 

@@ -18,7 +18,8 @@ aprendizaje-automatico/
 │   ├── clase 1 - tipos de aprendizaje/
 │   ├── clase 2 - concept_learning/
 │   ├── clase 3 - decision_trees/
-│   └── clase 4 - aprendizaje bayesiano/
+│   ├── clase 4 - aprendizaje bayesiano/
+│   └── clase 5 - metodologías/
 ├── practicos/              # Trabajos prácticos de la materia
 │   ├── practico 1/         # Concept Learning, Find-S y Candidate Elimination
 │   └── practico 2/         # Árboles de Decisión e ID3
