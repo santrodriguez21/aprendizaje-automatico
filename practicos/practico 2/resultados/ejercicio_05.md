@@ -45,7 +45,7 @@ Utilizando el algoritmo ID3 sobre las instancias 1 a 5 (idéntico al Ejercicio 3
 
 ```mermaid
 graph TD
-    C[Cielo (n=5, mayor=Sí)] -->|Soleado| V[Viento (n=4, mayor=Sí)]
+    C["Cielo (n=5, mayor=Sí)"] -->|Soleado| V["Viento (n=4, mayor=Sí)"]
     C -->|Lluvioso| N1[No]
     C -->|Nublado| S1[Sí]
     V -->|Fuerte| S2[Sí]
@@ -69,6 +69,11 @@ El algoritmo evalúa los nodos interiores desde la raíz hacia las hojas contra 
   - Instancia #7: Predice **Sí**. *(Real: No $\implies$ Error ❌)*
   - **Acierto de la raíz podada:** $\frac{1}{2} = \mathbf{50\%}$ ($1$ error).
 
+  ```mermaid
+  graph TD
+      Root["Sí (Hoja única podada, clase mayoritaria)"]
+  ```
+
 - **Decisión en la Raíz:** El resultado del subárbol ($100\%$) **no es peor** que podar ($50\%$). Por lo tanto, **la raíz NO se poda** y se procede a evaluar recursivamente a sus nodos hijos interiores.
 
 ---
@@ -82,6 +87,13 @@ El algoritmo evalúa los nodos interiores desde la raíz hacia las hojas contra 
 - **Comportamiento si se poda el nodo `Viento` (reemplazando por el valor más común de entrenamiento en este nodo: `Sí`):**
   - Instancia #6: Predice **Sí**. *(Real: Sí $\implies$ Correcto ✅)*
   - **Acierto del nodo podado:** $\frac{1}{1} = \mathbf{100\%}$.
+
+  ```mermaid
+  graph TD
+      C[Cielo] -->|Soleado| S2["Sí (Hoja podada de Viento)"]
+      C -->|Lluvioso| N1[No]
+      C -->|Nublado| S1[Sí]
+  ```
 
 - **Decisión en el Nodo `Viento`:** La regla del enunciado establece:
   > *"Cuando el resultado sobre el conjunto de validación es peor que simplemente predecir el valor más común... se elimina completamente el subárbol... En caso contrario, se procede a evaluar recursivamente a los nodos hijos."*

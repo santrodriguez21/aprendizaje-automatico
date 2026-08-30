@@ -83,7 +83,7 @@ Seleccionando **`Cielo`** como raíz:
 graph TD
     C[Cielo] -->|Soleado| S1[Sí]
     C -->|Lluvioso| N1[No]
-    C -->|Nublado| S2[Sí (mayoría)]
+    C -->|Nublado| S2["Sí (mayoría)"]
 ```
 
 ---
@@ -92,28 +92,74 @@ graph TD
 
 Instancia #5: $\langle \text{Soleado}, \text{Templado}, \text{Normal}, \text{Suave}, \text{Templada}, \text{Sin cambios} \rangle \to \text{Juega} = \mathbf{\text{No}}$.
 
-Ahora el conjunto tiene $|S| = 5$ instancias ($3$ Sí, $2$ No):
+#### 1. Entropía Inicial del Conjunto $S$:
+- $|S| = 5$, con $3$ Sí y $2$ No ($p_+ = 3/5$, $p_- = 2/5$).
 $$\text{Entropía}(S) = - \frac{3}{5}\log_2\left(\frac{3}{5}\right) - \frac{2}{5}\log_2\left(\frac{2}{5}\right) \approx 0{,}9710 \text{ bits}$$
 
-#### Ganancias en la Raíz:
-- **`Viento`:**
-  - $\text{Viento} = \text{Fuerte}$ (instancias 1, 2, 4, 3): $3$ Sí, $1$ No $\implies \text{Entropía} = 0{,}8113$.
-  - $\text{Viento} = \text{Suave}$ (instancia 5): $0$ Sí, $1$ No $\implies \text{Entropía} = 0{,}0$.
-  - $\text{Entropía Residual} = \frac{4}{5}(0{,}8113) + \frac{1}{5}(0) = 0{,}6490 \implies \mathbf{\text{Ganancia} = 0{,}3219 \text{ bits}}$.
+#### 2. Ganancia de Información de los 6 Atributos en la Raíz:
 
 - **`Cielo`:**
-  - $\text{Soleado}$ (1, 2, 4, 5): $3$ Sí, $1$ No $\implies \text{Entropía} = 0{,}8113$.
-  - $\text{Lluvioso}$ (3): $1$ No $\implies \text{Entropía} = 0{,}0$.
-  - $\text{Entropía Residual} = 0{,}6490 \implies \mathbf{\text{Ganancia} = 0{,}3219 \text{ bits}}$.
+  - $\text{Soleado}$ (1, 2, 4, 5): $3$ Sí, $1$ No $\implies \text{Entropía} = - \frac{3}{4}\log_2\left(\frac{3}{4}\right) - \frac{1}{4}\log_2\left(\frac{1}{4}\right) \approx 0{,}8113$.
+  - $\text{Lluvioso}$ (3): $0$ Sí, $1$ No $\implies \text{Entropía} = 0{,}0$.
+  - $\text{Entropía Residual} = \frac{4}{5}(0{,}8113) + \frac{1}{5}(0) = 0{,}6490 \implies \mathbf{\text{Ganancia}(S, \text{Cielo}) = 0{,}9710 - 0{,}6490 = 0{,}3219 \text{ bits}}$.
 
-- **`Temperatura`:** Idéntico a Cielo $\implies \mathbf{\text{Ganancia} = 0{,}3219 \text{ bits}}$.
+- **`Temperatura`:**
+  - $\text{Templado}$ (1, 2, 4, 5): $3$ Sí, $1$ No $\implies \text{Entropía} = 0{,}8113$.
+  - $\text{Frío}$ (3): $0$ Sí, $1$ No $\implies \text{Entropía} = 0{,}0$.
+  - $\text{Entropía Residual} = \frac{4}{5}(0{,}8113) + \frac{1}{5}(0) = 0{,}6490 \implies \mathbf{\text{Ganancia}(S, \text{Temp}) = 0{,}3219 \text{ bits}}$.
 
-Seleccionando **`Cielo`** como raíz:
-- **`Cielo = Lluvioso`:** Puro $\implies$ Hoja **No**.
-- **`Cielo = Soleado`:** Subconjunto $\{\#1, \#2, \#4, \#5\}$.
-  - Evaluando atributos restantes: **`Viento`** separa perfectamente:
-    - $\text{Viento} = \text{Fuerte}$ ($\#1, \#2, \#4$) $\implies$ Hoja **Sí**.
-    - $\text{Viento} = \text{Suave}$ ($\#5$) $\implies$ Hoja **No**.
+- **`Viento`:**
+  - $\text{Fuerte}$ (1, 2, 3, 4): $3$ Sí, $1$ No $\implies \text{Entropía} = 0{,}8113$.
+  - $\text{Suave}$ (5): $0$ Sí, $1$ No $\implies \text{Entropía} = 0{,}0$.
+  - $\text{Entropía Residual} = \frac{4}{5}(0{,}8113) + \frac{1}{5}(0) = 0{,}6490 \implies \mathbf{\text{Ganancia}(S, \text{Viento}) = 0{,}3219 \text{ bits}}$.
+
+- **`Tmp. Agua`:**
+  - $\text{Templada}$ (1, 2, 3, 5): $2$ Sí, $2$ No $\implies \text{Entropía} = 1{,}0000$.
+  - $\text{Fría}$ (4): $1$ Sí, $0$ No $\implies \text{Entropía} = 0{,}0$.
+  - $\text{Entropía Residual} = \frac{4}{5}(1{,}0000) + \frac{1}{5}(0) = 0{,}8000 \implies \mathbf{\text{Ganancia}(S, \text{Tmp.Agua}) = 0{,}9710 - 0{,}8000 = 0{,}1710 \text{ bits}}$.
+
+- **`Humedad`:**
+  - $\text{Alta}$ (2, 3, 4): $2$ Sí, $1$ No $\implies \text{Entropía} = - \frac{2}{3}\log_2\left(\frac{2}{3}\right) - \frac{1}{3}\log_2\left(\frac{1}{3}\right) \approx 0{,}9183$.
+  - $\text{Normal}$ (1, 5): $1$ Sí, $1$ No $\implies \text{Entropía} = 1{,}0000$.
+  - $\text{Entropía Residual} = \frac{3}{5}(0{,}9183) + \frac{2}{5}(1{,}0000) = 0{,}5510 + 0{,}4000 = 0{,}9510 \implies \mathbf{\text{Ganancia}(S, \text{Humedad}) = 0{,}9710 - 0{,}9510 = 0{,}0200 \text{ bits}}$.
+
+- **`Tiempo`:**
+  - $\text{Sin cambios}$ (1, 2, 5): $2$ Sí, $1$ No $\implies \text{Entropía} = 0{,}9183$.
+  - $\text{Cambiante}$ (3, 4): $1$ Sí, $1$ No $\implies \text{Entropía} = 1{,}0000$.
+  - $\text{Entropía Residual} = \frac{3}{5}(0{,}9183) + \frac{2}{5}(1{,}0000) = 0{,}9510 \implies \mathbf{\text{Ganancia}(S, \text{Tiempo}) = 0{,}9710 - 0{,}9510 = 0{,}0200 \text{ bits}}$.
+
+#### Tabla Resumen de Ganancias en la Raíz (Parte b):
+
+| Atributo | Entropía Residual | Ganancia ($Gain$) | ¿Seleccionado? |
+| :--- | :---: | :---: | :---: |
+| **`Cielo`** | $0{,}6490$ | $\mathbf{0{,}3219}$ | ⭐ **Sí** (Empate de máximo) |
+| **`Temperatura`** | $0{,}6490$ | $\mathbf{0{,}3219}$ | Empate de máximo |
+| **`Viento`** | $0{,}6490$ | $\mathbf{0{,}3219}$ | Empate de máximo |
+| **`Tmp. Agua`** | $0{,}8000$ | $0{,}1710$ | No |
+| **`Humedad`** | $0{,}9510$ | $0{,}0200$ | No |
+| **`Tiempo`** | $0{,}9510$ | $0{,}0200$ | No |
+
+---
+
+#### 3. Construcción del Árbol a partir de `Cielo`:
+Existe un triple empate de máxima ganancia ($0{,}3219$) entre `Cielo`, `Temperatura` y `Viento`. Manteniendo consistencia con la parte (a), seleccionamos **`Cielo`** como raíz:
+
+1. **Rama `Cielo = Lluvioso`:** Subconjunto $\{\#3\}$ ($1$ No) $\implies$ **Hoja No** (puro).
+2. **Rama `Cielo = Nublado`:** Sin instancias en entrenamiento $\implies$ **Hoja Sí** (mayoría global de $S$).
+3. **Rama `Cielo = Soleado`:** Subconjunto $S_{\text{Soleado}} = \{\#1, \#2, \#4, \#5\}$ ($3$ Sí, $1$ No).
+   - $\text{Entropía}(S_{\text{Soleado}}) = - \frac{3}{4}\log_2(3/4) - \frac{1}{4}\log_2(1/4) \approx 0{,}8113 \text{ bits}$.
+   - Se evalúan las ganancias de los atributos restantes sobre $S_{\text{Soleado}}$:
+     - **`Viento`:**
+       - $\text{Fuerte}$ ($\#1, \#2, \#4$): $3$ Sí, $0$ No $\implies \text{Entropía} = 0$.
+       - $\text{Suave}$ ($\#5$): $0$ Sí, $1$ No $\implies \text{Entropía} = 0$.
+       - $\text{Residual} = 0 \implies \mathbf{\text{Ganancia} = 0{,}8113 \text{ bits}}$ (Máxima, separación perfecta).
+     - **`Humedad`:** $\text{Residual} = 0{,}5000 \implies \text{Ganancia} = 0{,}3113 \text{ bits}$.
+     - **`Tmp. Agua`:** $\text{Residual} = 0{,}6887 \implies \text{Ganancia} = 0{,}1226 \text{ bits}$.
+     - **`Tiempo`:** $\text{Residual} = 0{,}6887 \implies \text{Ganancia} = 0{,}1226 \text{ bits}$.
+     - **`Temperatura`:** Todas las instancias son $\text{Templado} \implies \text{Ganancia} = 0{,}0000 \text{ bits}$.
+   - Se selecciona **`Viento`**:
+     - $\text{Viento} = \text{Fuerte} \implies$ **Hoja Sí** ($3$ Sí, $0$ No).
+     - $\text{Viento} = \text{Suave} \implies$ **Hoja No** ($0$ Sí, $1$ No).
 
 #### Árbol Resultante (b):
 
