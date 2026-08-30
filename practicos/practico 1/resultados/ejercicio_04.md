@@ -40,14 +40,30 @@ Find-S inicializa su hipótesis con la más específica posible ($\langle \empty
 * Si el ejemplo es **negativo**, se ignora completamente.
 
 ```mermaid
-graph TD
-    Start["h = <Ø, Ø, Ø, Ø, Ø>"] --> Loop["Para cada ejemplo (x, etiqueta):"]
-    Loop --> Check{"¿Es Positivo (+)? <br> (Salva = SÍ)"}
-    Check -- No --> Ignore["Ignorar ejemplo"] --> Loop
-    Check -- Sí --> Match{"¿h es <Ø,...,Ø>?"}
-    Match -- Sí --> Init["h = x"] --> Loop
-    Match -- No --> Gen["h[i] = '?' donde difiera de x[i]"] --> Loop
-    Loop --> End["Retornar hipótesis final h"]
+flowchart TD
+    Start(["Inicializar h = <Ø, Ø, Ø, Ø, Ø>"]) --> Get["Tomar siguiente ejemplo (x, c)"]
+    Get --> Check{"¿El ejemplo es positivo (+)?<br/>c(x) = 1"}
+    
+    Check -- "No (-)" --> Ignore["Ignorar ejemplo<br/>(Find-S no aprende de negativos)"]
+    Check -- "Sí (+)" --> First{"¿Es el primer<br/>positivo visto?"}
+    
+    First -- "Sí (h aún es Ø)" --> Init["h = x<br/>(adoptar valores de x)"]
+    First -- "No" --> Gen["Para cada atributo i:<br/>Si h[i] ≠ x[i] → h[i] = '?'"]
+    
+    Ignore --> Next{"¿Quedan más<br/>ejemplos en D?"}
+    Init --> Next
+    Gen --> Next
+    
+    Next -- "Sí" --> Get
+    Next -- "No" --> Ret(["Retornar hipótesis final h"])
+
+    classDef startEnd fill:#0f172a,stroke:#0f172a,color:#fff,font-weight:bold
+    classDef decision fill:#fef3c7,stroke:#d97706,color:#78350f,font-weight:bold
+    classDef process fill:#ffffff,stroke:#64748b,color:#0f172a
+    
+    class Start,Ret startEnd
+    class Check,First,Next decision
+    class Get,Ignore,Init,Gen process
 ```
 
 ---

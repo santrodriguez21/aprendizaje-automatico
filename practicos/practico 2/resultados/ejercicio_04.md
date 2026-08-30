@@ -143,14 +143,3 @@ graph TD
     T2 -->|mediano| M2[mala]
 ```
 
-```
-          [ Mes ]
-         /       \
-octubre /         \ noviembre
-       /           \
-   [ Tamaño ]     [ Tamaño ]
-    /      \       /      \
-med/    gran\   med/   gran\
-  /          \    /         \
-[buena]    [mala] [mala]   [buena]
-```

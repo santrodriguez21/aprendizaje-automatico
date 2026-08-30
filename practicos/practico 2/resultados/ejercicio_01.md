@@ -39,21 +39,9 @@ Dé árboles de decisión que representen las siguientes funciones booleanas:
 ```mermaid
 graph TD
     P[p] -->|1| Q[q]
-    P -->|0| N1[0 / No]
-    Q -->|0| S1[1 / Sí]
-    Q -->|1| N2[0 / No]
-```
-
-```
-       [ p ]
-      /     \
-   1 /       \ 0
-    /         \
-  [ q ]       [ 0 ]
-  /   \
-0/     \1
-/       \
-[ 1 ]   [ 0 ]
+    P -->|0| N1[No]
+    Q -->|0| S1[Si]
+    Q -->|1| N2[No]
 ```
 
 ---
@@ -74,26 +62,11 @@ graph TD
 graph TD
     P[p] -->|1| Q1[q]
     P -->|0| Q2[q]
-    Q1 -->|0| S1[1 / Sí]
-    Q1 -->|1| N1[0 / No]
-    Q2 -->|1| S2[1 / Sí]
-    Q2 -->|0| N2[0 / No]
+    Q1 -->|0| S1[Si]
+    Q1 -->|1| N1[No]
+    Q2 -->|1| S2[Si]
+    Q2 -->|0| N2[No]
 ```
-
-```
-          [ p ]
-        /       \
-     1 /         \ 0
-      /           \
-    [ q ]        [ q ]
-    /   \        /   \
-  0/     \1    1/     \0
-  /       \    /       \
-[ 1 ]   [ 0 ] [ 1 ]   [ 0 ]
-```
-
-> [!TIP]
-> **Observación sobre Paridad / XOR:** La función de paridad requiere inspeccionar obligatoriamente todas las variables de entrada en todas las ramas, generando un árbol completo de profundidad $n$ con $2^n$ hojas.
 
 ---
 
@@ -107,28 +80,12 @@ graph TD
 
 ```mermaid
 graph TD
-    P[p] -->|1| S1[1 / Sí]
+    P[p] -->|1| S1[Si]
     P -->|0| Q[q]
     Q -->|1| R[r]
-    Q -->|0| N1[0 / No]
-    R -->|1| S2[1 / Sí]
-    R -->|0| N2[0 / No]
-```
-
-```
-       [ p ]
-      /     \
-   1 /       \ 0
-    /         \
-  [ 1 ]      [ q ]
-            /     \
-         1 /       \ 0
-          /         \
-        [ r ]       [ 0 ]
-        /   \
-     1 /     \ 0
-      /       \
-    [ 1 ]     [ 0 ]
+    Q -->|0| N1[No]
+    R -->|1| S2[Si]
+    R -->|0| N2[No]
 ```
 
 ---
@@ -141,36 +98,16 @@ graph TD
 graph TD
     P[p] -->|1| Q[q]
     P -->|0| R1[r]
-    Q -->|1| S1[1 / Sí]
+    Q -->|1| S1[Si]
     Q -->|0| R2[r]
     R1 -->|1| S_1[s]
-    R1 -->|0| N1[0 / No]
+    R1 -->|0| N1[No]
     R2 -->|1| S_2[s]
-    R2 -->|0| N2[0 / No]
-    S_1 -->|1| S2[1 / Sí]
-    S_1 -->|0| N3[0 / No]
-    S_2 -->|1| S3[1 / Sí]
-    S_2 -->|0| N4[0 / No]
-```
-
-```
-                [ p ]
-              /       \
-           1 /         \ 0
-            /           \
-          [ q ]         [ r ]
-         /     \        /   \
-      1 /     0 \    1 /     \ 0
-       /         \    /       \
-     [ 1 ]      [ r ] [ s ]   [ 0 ]
-                /   \  / \
-             1 /   0 \1/  \0
-              /       X    \
-            [ s ]   [ 1 ] [ 0 ]
-            /   \
-         1 /     \ 0
-          /       \
-        [ 1 ]     [ 0 ]
+    R2 -->|0| N2[No]
+    S_1 -->|1| S2[Si]
+    S_1 -->|0| N3[No]
+    S_2 -->|1| S3[Si]
+    S_2 -->|0| N4[No]
 ```
 
 ---
@@ -189,20 +126,8 @@ graph TD
 
 ```mermaid
 graph TD
-    P[p] -->|0| S1[1 / Sí]
+    P[p] -->|0| S1[Si]
     P -->|1| Q[q]
-    Q -->|0| S2[1 / Sí]
-    Q -->|1| N1[0 / No]
-```
-
-```
-       [ p ]
-      /     \
-   0 /       \ 1
-    /         \
-  [ 1 ]      [ q ]
-             /   \
-          0 /     \ 1
-           /       \
-         [ 1 ]     [ 0 ]
+    Q -->|0| S2[Si]
+    Q -->|1| N1[No]
 ```

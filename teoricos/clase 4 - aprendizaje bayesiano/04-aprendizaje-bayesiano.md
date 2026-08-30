@@ -74,14 +74,14 @@ Consideremos un problema clásico de razonamiento bayesiano:
 
 ```mermaid
 graph TD
-    Pop["Población de Atletas"] -->|1%| Dop["Dopaje: P(d)=0.01"]
-    Pop -->|99%| NoDop["No Dopaje: P(¬d)=0.99"]
+    Pop["Población de Atletas"] -->|"1%"| Dop["Dopaje: P(d)=0.01"]
+    Pop -->|"99%"| NoDop["No Dopaje: P(no d)=0.99"]
     
-    Dop -->|77%| TP["Test +: 0.01 × 0.77 = 0.0077"]
-    Dop -->|23%| FN["Test -: 0.01 × 0.23 = 0.0023"]
+    Dop -->|"77%"| TP["Test +: 0.01 x 0.77 = 0.0077"]
+    Dop -->|"23%"| FN["Test -: 0.01 x 0.23 = 0.0023"]
     
-    NoDop -->|10%| FP["Test +: 0.99 × 0.10 = 0.0990"]
-    NoDop -->|90%| TN["Test -: 0.99 × 0.90 = 0.8910"]
+    NoDop -->|"10%"| FP["Test +: 0.99 x 0.10 = 0.0990"]
+    NoDop -->|"90%"| TN["Test -: 0.99 x 0.90 = 0.8910"]
 ```
 
 ### Cálculo de Probabilidades:

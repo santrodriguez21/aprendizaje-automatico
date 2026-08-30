@@ -50,8 +50,7 @@ $$g(x) \equiv \neg (x = x_3)$$
 
 ### Parte b) Análisis Crítico: ¿Es una buena opción?
 
-> [!CAUTION]
-> **NO, es una pésima opción.** Combinar un algoritmo de cálculo exacto del espacio de versiones (*Candidate-Elimination*) con un espacio de hipótesis completo y no restringido (*Árboles de Decisión*) genera dos problemas insalvables:
+**NO, es una pésima opción.** Combinar un algoritmo de cálculo exacto del espacio de versiones (*Candidate-Elimination*) con un espacio de hipótesis completo y no restringido (*Árboles de Decisión*) genera dos problemas insalvables:
 
 ---
 
