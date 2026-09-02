@@ -81,6 +81,7 @@ Guía rápida de referencia con la notación formal, definiciones y conceptos fu
 | **Suavizado de Laplace** | $m = k = \|\text{Val}(A)\|$, $p = \frac{1}{k}$ | Caso particular del $m$-estimador que suma $+1$ a cada conteo: $\hat{P} = \frac{n_c + 1}{n + k}$. |
 | **Inferencia Logarítmica** | $\arg\max_{c} \left[ \log P(c) + \sum_{i} \log P(a_i \mid c) \right]$ | Transforma productos en sumas para evitar el desbordamiento por subflujo numérico (*underflow*). |
 | **Clasificador Bayesiano Óptimo (BOC)** | $\arg\max_{v_j \in V} \sum_{h_i \in H} P(v_j \mid h_i) P(h_i \mid D)$ | Combina las predicciones de todas las hipótesis ponderadas por $P(h_i \mid D)$. Maximiza la probabilidad de acierto. |
+| **Principio MDL (*Minimum Description Length*)** | $\arg\min_{h} [ L_{C_1}(h) + L_{C_2}(D \mid h) ]$ | Criterio bayesiano de selección de hipótesis que minimiza la suma de bits para codificar $h$ y los errores de $h$ sobre $D$. Equivale a $h_{\text{MAP}}$ con codificación óptima de Shannon ($-\log_2 P$). |
 
 ---
 
@@ -143,4 +144,25 @@ Guía rápida de referencia con la notación formal, definiciones y conceptos fu
 | **Métodos Embebidos (*Embedded*)** | Selección intrínseca | La selección de atributos ocurre de manera natural dentro del algoritmo durante el ajuste (ej. divisiones en árboles de decisión, penalización L1 Lasso). |
 | **GridSearchCV / RandomizedSearchCV** | Optimización de hiperparámetros | Búsqueda exhaustiva sobre una grilla discreta (*Grid*) o muestreo aleatorio probabilístico sobre distribuciones (*Randomized*). |
 | **Pipeline y ColumnTransformer** | Ensamblado modular en Scikit-Learn | Encapsula transformaciones heterogéneas por tipo de columna y el estimador final, garantizando reproducibilidad y ausencia de *data leakage*. |
+
+---
+
+## 📍 8. Aprendizaje Basado en Instancias y Razonamiento Basado en Casos (Clase 6)
+
+| Símbolo / Término | Definición / Notación | Significado / Contexto de la Clase |
+| :--- | :--- | :--- |
+| **Aprendizaje Perezoso (*Lazy Learning*)** | Generalización diferida | No compila una hipótesis global durante el entrenamiento; retiene los datos y construye aproximaciones locales solo al recibir una consulta $x_q$. |
+| **Aprendizaje Ansioso (*Eager Learning*)** | Generalización inmediata | Compila una única hipótesis global fija $h \in H$ durante el entrenamiento (ej. Árboles, Naïve Bayes, SVM), facilitando inferencia rápida. |
+| **Distancia Euclidiana** | $d(x_i, x_j) = \sqrt{\sum_{r=1}^n (a_r(x_i) - a_r(x_j))^2}$ | Métrica estándar en $\mathbb{R}^n$ para cuantificar la separación geométrica entre dos instancias. |
+| **Algoritmo $k$-NN ($k$-Nearest Neighbors)** | $\hat{f}(x_q) = \arg\max_{v} \sum_{i=1}^k \delta(v, f(x_i))$ | Clasificador que asigna la etiqueta mayoritaria entre las $k$ instancias geométricamente más cercanas a la consulta. |
+| **Regresión con $k$-NN** | $\hat{f}(x_q) = \frac{1}{k} \sum_{i=1}^k f(x_i)$ | Aproximación para funciones reales continuas promediando el valor objetivo de los $k$ vecinos. |
+| **Método de Shepard ($k$-NN Ponderado)** | $w_i = \frac{1}{d(x_q, x_i)^2}$ | Pondera la contribución de cada vecino por el inverso del cuadrado de su distancia, permitiendo considerar incluso a todo el conjunto de entrenamiento ($k = \|D\|$). |
+| **Maldición de la Dimensionalidad** | Degeneración en alta dimensión | En espacios con muchas dimensiones irrelevantes, la distancia euclidiana se vuelve ruidosa e inútil porque todos los puntos tienden a estar equidistantes. |
+| **Ponderación de Ejes / Atributos** | $d_z(x_i, x_j) = \sqrt{\sum_{r=1}^n z_r (a_r(x_i) - a_r(x_j))^2}$ | Asigna coeficientes $z_r \ge 0$ para alargar ejes de atributos altamente informativos y comprimir o anular dimensiones ruidosas. |
+| **Sesgo Inductivo de $k$-NN** | Cercanía implica similitud | Suposición de suavidad local: instancias que se encuentran próximas en el espacio euclídeo poseen etiquetas o valores de función objetivo similares. |
+| **Estructuras de Indexación Espacial** | $k\text{-d trees}$, Ball Trees | Estructuras jerárquicas de partición espacial que reducen la complejidad de búsqueda de vecinos de $O(N)$ lineal a $O(\log N)$. |
+| **Regresión Local Ponderada (RLP / LWR)** | $\hat{f}(x) = w^T x$ ajustada localmente | Construye explícitamente una función matemática local alrededor de $x_q$ minimizando un error cuadrático ponderado por un kernel decreciente $K(d)$. La hipótesis se descarta tras responder. |
+| **Función Núcleo (*Kernel*) $K(d)$** | $\exp\left(-\frac{d(x_q, x)^2}{2\sigma^2}\right)$ | Función monótona decreciente que modula la influencia de cada punto de entrenamiento en el error local en función de su distancia a la consulta. |
+| **Razonamiento Basado en Casos (CBR)** | Instancias estructuradas | Paradigma perezoso para resolver problemas representados mediante estructuras complejas (grafos, tuplas jerárquicas), empleando métricas de similitud semántica. |
+| **Ciclo de las 4R en CBR** | Retrieve, Reuse, Revise, Retain | Fases canónicas de CBR: 1. Recuperar casos similares; 2. Reutilizar/adaptar solución; 3. Revisar en el entorno; 4. Retener nuevo caso en la base. |
 

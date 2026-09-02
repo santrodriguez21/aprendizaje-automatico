@@ -2,7 +2,7 @@
 
 Material conceptual, notas, diapositivas y ejemplos organizados por cada clase:
 
-* 📖 [**`GLOSARIO.md`**](./GLOSARIO.md): **Glosario de Términos y Notación Formal** (organizado por temática: Fundamentos, Concept Learning, Árboles de Decisión, Bayes, Sesgos, Métricas Estadísticas y Metodología/Preprocesamiento).
+* 📖 [**`GLOSARIO.md`**](./GLOSARIO.md): **Glosario de Términos y Notación Formal** (organizado por temática: Fundamentos, Concept Learning, Árboles de Decisión, Bayes, Sesgos, Métricas Estadísticas, Metodología/Preprocesamiento y Aprendizaje Basado en Casos/Instancias).
 
 ---
 
@@ -48,5 +48,11 @@ Material conceptual, notas, diapositivas y ejemplos organizados por cada clase:
 - 📑 [**`5_metodologia.pdf`**](./clase%205%20-%20metodolog%C3%ADas/5_metodologia.pdf): Diapositivas originales de la clase.
 - 🧪 **Código y Pipelines** ([`clase 5 - metodologías/`](./clase%205%20-%20metodolog%C3%ADas/)):
   - 📓 [**`demo_pipeline.ipynb`**](./clase%205%20-%20metodolog%C3%ADas/demo_pipeline.ipynb): Notebook práctico con Pipeline, ColumnTransformer, SimpleImputer, OneHotEncoder, StratifiedKFold y GridSearchCV.
+
+---
+
+### 📂 [Clase 6: Aprendizaje Basado en Casos e Instancias](./clase%206%20-%20aprendizaje%20basado%20en%20casos/)
+- 📄 [**`06-aprendizaje-basado-en-casos.md`**](./clase%206%20-%20aprendizaje%20basado%20en%20casos/06-aprendizaje-basado-en-casos.md): Aprendizaje perezoso (*Lazy*) vs. ansioso (*Eager*), clasificador $k$-Nearest Neighbor ($k$-NN), distancia euclidiana, voto discreto y regresión, $k$-NN ponderado por distancia (Método de Shepard), selección de $k$ y LOOCV, la Maldición de la Dimensionalidad (ponderación y selección de ejes), estandarización/escalamiento, indexación espacial ($k\text{-d trees}$, Ball Trees), sesgo inductivo, Regresión Local Ponderada (RLP/LWR) con funciones núcleo (*kernel*) decrecientes, y Razonamiento Basado en Casos (CBR) con el ciclo de las 4R (*Retrieve, Reuse, Revise, Retain*).
+- 📑 [**`6_casos.pdf`**](./clase%206%20-%20aprendizaje%20basado%20en%20casos/6_casos.pdf): Diapositivas originales de la clase.
 
 
