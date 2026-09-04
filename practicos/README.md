@@ -22,5 +22,6 @@ Guías de ejercicios, enunciados y letras de los trabajos prácticos:
 ### 📂 [Práctico 3: Aprendizaje Bayesiano, Aprendizaje por Casos y Metodología](./practico%203/)
 - 📄 [**`practico_3.md`**](./practico%203/letra/practico_3.md): Enunciados completos con hipótesis MAP/ML, principio MDL, Naïve Bayes, $k$-NN, preprocesamiento (faltantes, discretización, One-Hot, estandarización), validación estratificada, métricas multiclase (Micro/Macro $F_1$) e intervalos de confianza estadísticos al 95%.
 - 📑 [**`practico_3.pdf`**](./practico%203/letra/practico_3.pdf): Letra original en PDF.
+- 📁 [**`Resultados / Soluciones`**](./practico%203/resultados/): Resoluciones detalladas por ejercicio (`ejercicio_01.md` al `ejercicio_08.md`), código y scripts de verificación.
 
 
